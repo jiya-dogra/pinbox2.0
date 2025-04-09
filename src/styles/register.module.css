@@ -1,0 +1,52 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin-top: 5em;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-inline: 10em;
+    align-items: center;
+}
+
+.form {
+    width: fit-content;
+    align-self: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 2em;
+    align-items: center;
+}
+
+.form input {
+    border: none;
+    outline: none;
+    border-radius: 2em;
+    padding: 0.7em;
+    background-color: #406181ad;
+}
+
+.form input::placeholder {
+    color: #7598ba;
+}
+
+.button {
+    width: 10em;
+    border: none;
+    outline: none;
+    background-color: #406181ad;
+    color: white;
+    border-radius: 2em;
+    height: 2em;
+    font-size: 1.2em;
+    margin-top: 2em;
+    box-shadow: 0 0 20px #000000;
+}
+
+.button:hover {
+    background-color: #406181;
+}

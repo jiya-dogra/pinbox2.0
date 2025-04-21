@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 *,
 *::before,
 *::after {
@@ -14,23 +16,21 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
     font-size: 12px;
     overflow-x: hidden;
-    background-image: url(../../public/landingpagebg.jpg);
+    background-color: #ffffff;
+    /* background-image: url(/landingpagebg.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-color: #25527f;
-    background-blend-mode: darken;
-    color: white;
+    background-attachment: fixed; */
+    cursor: default;
 }
 
 /* Text styling */
 p {
     margin: 0.5rem 0;
-    text-align: center;
     line-height: 1.2;
 }
 
@@ -38,24 +38,43 @@ p {
     display: none;
 }
 
+.logo,
+.login {
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.login {
+    padding: 0.5em;
+    border-radius: 5px;
+}
+
+.login:hover {
+    background-color: #46423f66;
+}
+
 .nav-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
     z-index: 1000;
     position: fixed;
     top: 0;
     right: 0;
     left: 0;
-    padding-top: 1em;
+    padding-inline: 20px;
+    box-shadow: 0 0 5px #545454;
 }
 
 .nav {
-    background-color: #283d5159;
-    padding: 1em;
-    border-radius: 2em;
-    width: fit-content;
+    padding: 2em 1em;
+    width: 100%;
+    transition: box-shadow 0.3s ease;
+}
+
+.nav-wrapper.scrolled {
+    border-bottom: 2px solid #000000;
+    box-shadow: 0 1px 2px #000000;
 }
 
 .nav ul {
@@ -66,6 +85,10 @@ p {
     margin: 0;
     padding: 0;
     gap: 5em;
+}
+
+.nav ul li {
+    cursor: pointer;
 }
 
 .footer {

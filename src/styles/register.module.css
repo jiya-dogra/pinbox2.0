@@ -1,7 +1,6 @@
 .wrapper {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
     margin-top: 5em;
 }
 
@@ -13,7 +12,8 @@
     align-items: center;
 }
 
-.form {
+.form,
+.formtwo {
     width: fit-content;
     align-self: center;
     display: grid;
@@ -22,31 +22,92 @@
     align-items: center;
 }
 
-.form input {
-    border: none;
-    outline: none;
-    border-radius: 2em;
-    padding: 0.7em;
-    background-color: #406181ad;
+.formtwo {
+    grid-template-columns: 1fr;
+    justify-items: center;
 }
 
-.form input::placeholder {
-    color: #7598ba;
+.form input,
+.formtwo input {
+    border: 1.5px solid #000000;
+    border-bottom: 5px solid #000000;
+    border-left: 5px solid #000000;
+    border-radius: 8px;
+    outline: none;
+    padding: 0.7em;
+    background-color: #ffffff;
+}
+
+.form input::placeholder,
+.formtwo input::placeholder {
+    color: #352a22;
+}
+
+.optionwrapper {
+    align-items: center;
+    width: 13em;
+}
+
+.option {
+    display: grid;
+    grid-template-columns: 1fr 0.1fr;
+    align-items: center;
 }
 
 .button {
     width: 10em;
-    border: none;
+    border: 1.5px solid #000000;
+    border-bottom: 5px solid #000000;
+    border-left: 5px solid #000000;
     outline: none;
-    background-color: #406181ad;
-    color: white;
-    border-radius: 2em;
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 8px;
     height: 2em;
     font-size: 1.2em;
     margin-top: 2em;
-    box-shadow: 0 0 20px #000000;
+    transition: .4s ease-in;
 }
 
 .button:hover {
-    background-color: #406181;
+    background-color: #eeeeee;
+    cursor: pointer;
+    transform: translate(3px);
+}
+
+.toast {
+    position: fixed;
+    bottom: 2em;
+    right: 2em;
+    background-color: #2e7d32;
+    /* green */
+    color: white;
+    padding: 1em 1.5em;
+    border-radius: 0.5em;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: fadeInOut 4s ease-in-out;
+    z-index: 999;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
 }

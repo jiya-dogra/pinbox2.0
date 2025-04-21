@@ -1,7 +1,6 @@
 .wrapper {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
     margin-top: 5em;
 }
 
@@ -15,15 +14,20 @@
 
 .button {
     width: 15em;
-    border: none;
+    border: 1.5px solid #000000;
+    border-bottom: 5px solid #000000;
+    border-left: 5px solid #000000;
     outline: none;
-    background-color: #406181ad;
-    color: white;
-    border-radius: 2em;
-    height: 3em;
-    font-size: 1.2em;
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 8px;
+    height: 2em;
+    font-size: 1.5em;
+    transition: .4s ease-in;
 }
 
 .button:hover {
-    background-color: #406181;
+    background-color: #eeeeee;
+    cursor: pointer;
+    transform: translate(3px);
 }

@@ -13,3 +13,53 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Company {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  phone        String
+  industryType String
+  address      String
+  website      String?
+  createdAt    DateTime @default(now())
+
+  admin Admin? // one-to-one relation
+  users User[] // one-to-many relation
+  Room  Room[]
+
+  @@unique([name, address])
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  fullName  String
+  email     String   @unique
+  password  String
+  company   Company  @relation(fields: [companyId], references: [id])
+  companyId String   @unique
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id        String   @id @default(uuid())
+  fullName  String
+  email     String   @unique
+  password  String
+  company   Company  @relation(fields: [companyId], references: [id])
+  companyId String
+  createdAt DateTime @default(now())
+  Room      Room?    @relation(fields: [roomId], references: [id])
+  roomId    String?
+}
+
+model Room {
+  id        String   @id @default(uuid())
+  name      String
+  company   Company  @relation(fields: [companyId], references: [id])
+  companyId String
+  users     User[]
+  createdAt DateTime @default(now())
+
+  @@unique([name, companyId]) // Ensures room names are unique per company
+}

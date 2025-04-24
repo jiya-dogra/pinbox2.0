@@ -33,6 +33,7 @@ export async function GET(request: Request) {
         id: true,
         fullName: true,
         email: true,
+        room: true
         // Include other fields you need
       }
     });

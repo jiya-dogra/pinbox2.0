@@ -125,3 +125,27 @@
 .deleteButton:hover {
     background-color: #cc0000;
 }
+
+/* Room Assignment Dialog Styles */
+.roomList {
+    max-height: 300px;
+    overflow-y: auto;
+    margin: 20px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.roomItem {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.roomItem:hover {
+    background-color: #f5f5f5;
+}
+
+.roomItem:last-child {
+    border-bottom: none;
+}

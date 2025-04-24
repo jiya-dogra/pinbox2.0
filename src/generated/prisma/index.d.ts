@@ -3624,7 +3624,7 @@ export namespace Prisma {
     createdAt?: boolean
     roomId?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
-    Room?: boolean | User$RoomArgs<ExtArgs>
+    room?: boolean | User$roomArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3636,7 +3636,7 @@ export namespace Prisma {
     createdAt?: boolean
     roomId?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
-    Room?: boolean | User$RoomArgs<ExtArgs>
+    room?: boolean | User$roomArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3648,7 +3648,7 @@ export namespace Prisma {
     createdAt?: boolean
     roomId?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
-    Room?: boolean | User$RoomArgs<ExtArgs>
+    room?: boolean | User$roomArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -3664,22 +3664,22 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "companyId" | "createdAt" | "roomId", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
-    Room?: boolean | User$RoomArgs<ExtArgs>
+    room?: boolean | User$roomArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
-    Room?: boolean | User$RoomArgs<ExtArgs>
+    room?: boolean | User$roomArgs<ExtArgs>
   }
   export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
-    Room?: boolean | User$RoomArgs<ExtArgs>
+    room?: boolean | User$roomArgs<ExtArgs>
   }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
       company: Prisma.$CompanyPayload<ExtArgs>
-      Room: Prisma.$RoomPayload<ExtArgs> | null
+      room: Prisma.$RoomPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4084,7 +4084,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    Room<T extends User$RoomArgs<ExtArgs> = {}>(args?: Subset<T, User$RoomArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    room<T extends User$roomArgs<ExtArgs> = {}>(args?: Subset<T, User$roomArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4517,9 +4517,9 @@ export namespace Prisma {
   }
 
   /**
-   * User.Room
+   * User.room
    */
-  export type User$RoomArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$roomArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Room
      */
@@ -5915,7 +5915,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     roomId?: StringNullableFilter<"User"> | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
-    Room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
+    room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -5927,7 +5927,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     roomId?: SortOrderInput | SortOrder
     company?: CompanyOrderByWithRelationInput
-    Room?: RoomOrderByWithRelationInput
+    room?: RoomOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -5942,7 +5942,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     roomId?: StringNullableFilter<"User"> | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
-    Room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
+    room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -6183,7 +6183,7 @@ export namespace Prisma {
     password: string
     createdAt?: Date | string
     company: CompanyCreateNestedOneWithoutUsersInput
-    Room?: RoomCreateNestedOneWithoutUsersInput
+    room?: RoomCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -6203,7 +6203,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     company?: CompanyUpdateOneRequiredWithoutUsersNestedInput
-    Room?: RoomUpdateOneWithoutUsersNestedInput
+    room?: RoomUpdateOneWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -6912,7 +6912,7 @@ export namespace Prisma {
     email: string
     password: string
     createdAt?: Date | string
-    Room?: RoomCreateNestedOneWithoutUsersInput
+    room?: RoomCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateWithoutCompanyInput = {
@@ -7353,7 +7353,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Room?: RoomUpdateOneWithoutUsersNestedInput
+    room?: RoomUpdateOneWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCompanyInput = {

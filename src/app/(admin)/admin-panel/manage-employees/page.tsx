@@ -12,15 +12,27 @@ interface Employee {
     fullName: string;
     email: string;
     password: string;
+    room: {
+        id: string;
+        name: string;
+    } | null;
+}
+
+interface Room {
+    id: string;
+    name: string;
 }
 
 export default function ManageEmployees() {
     const [activeRow, setActiveRow] = useState<number | null>(null);
     const [employees, setEmployees] = useState<Employee[]>([]);
+    const [rooms, setRooms] = useState<Room[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isRoomDialogOpen, setIsRoomDialogOpen] = useState(false);
     const [currentEmployee, setCurrentEmployee] = useState<Employee | null>(null);
+    const [selectedEmployeeForRoom, setSelectedEmployeeForRoom] = useState<string | null>(null);
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
@@ -30,10 +42,14 @@ export default function ManageEmployees() {
     const adminId = getAdminId();
 
     useEffect(() => {
-        fetchEmployees();
+        if (adminId) {
+            fetchEmployees();
+            fetchRooms();
+        }
     }, [adminId]);
 
     const fetchEmployees = async () => {
+        setIsLoading(true);
         try {
             const res = await fetch(`/api/users?adminId=${adminId}`);
             if (!res.ok) {
@@ -46,6 +62,20 @@ export default function ManageEmployees() {
             setError(err.message);
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const fetchRooms = async () => {
+        try {
+            const res = await fetch(`/api/rooms?adminId=${adminId}`);
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.error || 'Failed to fetch rooms');
+            }
+            const data = await res.json();
+            setRooms(data);
+        } catch (err: any) {
+            setError(err.message);
         }
     };
 
@@ -63,6 +93,51 @@ export default function ManageEmployees() {
             password: employee.password
         });
         setIsDialogOpen(true);
+    };
+
+    const handleRoomAssignClick = (employeeId: string) => {
+        setSelectedEmployeeForRoom(employeeId);
+        setIsRoomDialogOpen(true);
+    };
+
+    const assignRoom = async (roomId: string) => {
+        if (!selectedEmployeeForRoom) return;
+
+        try {
+            const response = await fetch('/api/assign-room', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: selectedEmployeeForRoom,
+                    roomId,
+                    adminId
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to assign room');
+            }
+
+            const result = await response.json();
+            const updatedUser = result.user;
+
+            setEmployees(prevEmployees =>
+                prevEmployees.map(emp =>
+                    emp.id === updatedUser.id
+                        ? {
+                            ...emp,
+                            room: updatedUser.room
+                        }
+                        : emp
+                )
+            );
+
+            setIsRoomDialogOpen(false);
+            fetchEmployees(); // Refresh the employee list
+        } catch (err: any) {
+            setError(err.message);
+        }
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,16 +164,9 @@ export default function ManageEmployees() {
                 })
             });
 
-            const contentType = response.headers.get('content-type');
-            if (!contentType || !contentType.includes('application/json')) {
-                const text = await response.text();
-                throw new Error(text || 'Invalid response from server');
-            }
-
-            const data = await response.json();
-
             if (!response.ok) {
-                throw new Error(data.error || 'Operation failed');
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Operation failed');
             }
 
             setIsDialogOpen(false);
@@ -173,7 +241,19 @@ export default function ManageEmployees() {
                                     <span style={{ justifySelf: 'center' }}>{index + 1}</span>
                                     <span>{employee.fullName}</span>
                                     <span>{employee.email}</span>
-                                    <span>N/A</span>
+                                    <span
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleRoomAssignClick(employee.id);
+                                        }}
+                                        style={{
+                                            cursor: 'pointer',
+                                            textDecoration: 'underline',
+                                            color: employee.room ? 'inherit' : '#999'
+                                        }}
+                                    >
+                                        {employee.room ? employee.room.name : 'N/A'}
+                                    </span>
                                     <span
                                         style={{ justifySelf: 'center', cursor: 'pointer' }}
                                         onClick={(e) => {
@@ -189,7 +269,7 @@ export default function ManageEmployees() {
                     </div>
                 </div>
 
-                {/* Dialog Box */}
+                {/* Employee Edit/Add Dialog */}
                 {isDialogOpen && (
                     <div className={style.dialogOverlay}>
                         <div className={style.dialog}>
@@ -233,7 +313,7 @@ export default function ManageEmployees() {
                                             onClick={handleDelete}
                                             className={style.deleteButton}
                                             disabled={isDeleting}
-                                        >{isDeleting ? 'Deleting...' : 'Delete'}</button>
+                                        >{isDeleting ? 'Deleting...' : <><FaTrash /> Delete</>}</button>
                                     )}
                                     <button type="button" onClick={() => setIsDialogOpen(false)}>
                                         Cancel
@@ -243,6 +323,35 @@ export default function ManageEmployees() {
                                     </button>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                )}
+
+                {/* Room Assignment Dialog */}
+                {isRoomDialogOpen && (
+                    <div className={style.dialogOverlay}>
+                        <div className={style.dialog}>
+                            <h2>Assign Room</h2>
+                            <div className={style.roomList}>
+                                {rooms.map((room) => (
+                                    <div
+                                        key={room.id}
+                                        className={style.roomItem}
+                                        onClick={() => assignRoom(room.id)}
+                                    >
+                                        {room.name}
+                                    </div>
+                                ))}
+                            </div>
+                            <div className={style.buttonGroup}>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsRoomDialogOpen(false)}
+                                    style={{ marginTop: '20px' }}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                     </div>
                 )}

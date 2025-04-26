@@ -120,21 +120,24 @@ export default function ManageEmployees() {
             }
 
             const result = await response.json();
-            const updatedUser = result.user;
 
+            // Update the specific employee in the state
             setEmployees(prevEmployees =>
                 prevEmployees.map(emp =>
-                    emp.id === updatedUser.id
+                    emp.id === selectedEmployeeForRoom
                         ? {
                             ...emp,
-                            room: updatedUser.room
+                            room: {
+                                id: roomId,
+                                name: rooms.find(r => r.id === roomId)?.name || ''
+                            }
                         }
                         : emp
                 )
             );
 
             setIsRoomDialogOpen(false);
-            fetchEmployees(); // Refresh the employee list
+            setSelectedEmployeeForRoom(null);
         } catch (err: any) {
             setError(err.message);
         }
@@ -248,8 +251,8 @@ export default function ManageEmployees() {
                                         }}
                                         style={{
                                             cursor: 'pointer',
-                                            textDecoration: 'underline',
-                                            color: employee.room ? 'inherit' : '#999'
+                                            color: employee.room ? 'inherit' : '#999',
+                                            textDecoration: 'underline'
                                         }}
                                     >
                                         {employee.room ? employee.room.name : 'N/A'}
@@ -313,7 +316,7 @@ export default function ManageEmployees() {
                                             onClick={handleDelete}
                                             className={style.deleteButton}
                                             disabled={isDeleting}
-                                        >{isDeleting ? 'Deleting...' : <><FaTrash /> Delete</>}</button>
+                                        >{isDeleting ? 'Deleting...' : <>Delete</>}</button>
                                     )}
                                     <button type="button" onClick={() => setIsDialogOpen(false)}>
                                         Cancel

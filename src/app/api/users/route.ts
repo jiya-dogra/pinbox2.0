@@ -28,15 +28,16 @@ export async function GET(request: Request) {
 
     // Fetch users for this company
     const users = await prisma.user.findMany({
-      where: { companyId: admin.companyId },
+  where: { companyId: admin.companyId },
+  include: {
+    room: {
       select: {
         id: true,
-        fullName: true,
-        email: true,
-        room: true
-        // Include other fields you need
+        name: true
       }
-    });
+    }
+  }
+});
 
     return NextResponse.json(users);
 

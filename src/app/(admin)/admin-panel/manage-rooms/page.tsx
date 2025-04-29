@@ -127,7 +127,7 @@ export default function ManageRooms() {
                             <li style={{ color: '#656565' }}>
                                 <span style={{ justifySelf: 'center' }}>S.No.</span>
                                 <span>Room Name</span>
-                                <span style={{ justifySelf: 'center' }}>Members</span>
+                                <span>Members</span>
                                 <span
                                     style={{ justifySelf: 'center' }}
                                     onClick={handleAddClick}>
@@ -156,7 +156,7 @@ export default function ManageRooms() {
                                     >
                                         <span style={{ justifySelf: 'center' }}>{index + 1}</span>
                                         <span>{room.name}</span>
-                                        <span style={{ justifySelf: 'center' }}>{room._count.users}</span>
+                                        <span>{room._count.users}</span>
                                         <span style={{ justifySelf: 'center', display: 'flex', gap: '0.5rem' }}>
                                             <BiSolidEdit
                                                 onClick={(e) => {

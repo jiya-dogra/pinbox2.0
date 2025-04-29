@@ -64,6 +64,7 @@ p {
     left: 0;
     padding-inline: 20px;
     box-shadow: 0 0 5px #545454;
+    background-color: #ffffff;
 }
 
 .nav {

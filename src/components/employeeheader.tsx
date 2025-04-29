@@ -7,11 +7,16 @@ export default function EmployeeHeader() {
     const router = useRouter();
 
     return (
-        <header>
-            <nav>
-                <button onClick={() => router.push('/employee-panel')}>Dashboard</button>
-                <button onClick={logout}>Logout</button>
+        <div className='nav-wrapper'>
+            <p className='logo'>PINBOX</p>
+            <nav className='nav'>
+                <ul>
+                    <li onClick={() => router.push('/employee-panel')}>Dashboard</li>
+                    <li onClick={() => router.push('/employee-panel/tasks')}>Tasks</li>
+                    <li onClick={() => router.push('/employee-panel/calendar')}>Calendar</li>
+                </ul>
             </nav>
-        </header>
+            <p className='login' onClick={logout}>Logout</p>
+        </div>
     );
 }

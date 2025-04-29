@@ -5,7 +5,8 @@ import AdminHeader from '@/src/components/adminheader';
 import ProtectedRoute from '@/src/components/ProtectedRoute';
 import { useState, useEffect } from 'react';
 import { getAdminId } from '@/src/utils/auth';
-import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import { BiSolidEdit } from "react-icons/bi";
+import { AiOutlineDelete } from "react-icons/ai";
 
 interface Room {
     id: string;
@@ -126,7 +127,7 @@ export default function ManageRooms() {
                             <li style={{ color: '#656565' }}>
                                 <span style={{ justifySelf: 'center' }}>S.No.</span>
                                 <span>Room Name</span>
-                                <span>Members</span>
+                                <span style={{ justifySelf: 'center' }}>Members</span>
                                 <span
                                     style={{ justifySelf: 'center' }}
                                     onClick={handleAddClick}>
@@ -145,33 +146,37 @@ export default function ManageRooms() {
                                 </li>
                             )}
 
-                            {rooms.map((room, index) => (
-                                <li
-                                    key={room.id}
-                                    className={activeRow === index ? style.active : ''}
-                                    onClick={() => setActiveRow(index)}
-                                >
-                                    <span style={{ justifySelf: 'center' }}>{index + 1}</span>
-                                    <span>{room.name}</span>
-                                    <span>{room._count.users}</span>
-                                    <span style={{ justifySelf: 'center', display: 'flex', gap: '0.5rem' }}>
-                                        <FaEdit
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleEditClick(room, index);
-                                            }}
-                                            style={{ cursor: 'pointer' }}
-                                        />
-                                        <FaTrash
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleDelete(room.id);
-                                            }}
-                                            style={{ cursor: 'pointer', color: '#ff4444' }}
-                                        />
-                                    </span>
-                                </li>
-                            ))}
+                            {rooms
+                                .sort((a, b) => a.name.localeCompare(b.name))
+                                .map((room, index) => (
+                                    <li
+                                        key={room.id}
+                                        className={activeRow === index ? style.active : ''}
+                                        onClick={() => setActiveRow(index)}
+                                    >
+                                        <span style={{ justifySelf: 'center' }}>{index + 1}</span>
+                                        <span>{room.name}</span>
+                                        <span style={{ justifySelf: 'center' }}>{room._count.users}</span>
+                                        <span style={{ justifySelf: 'center', display: 'flex', gap: '0.5rem' }}>
+                                            <BiSolidEdit
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleEditClick(room, index);
+                                                }}
+                                                style={{ cursor: 'pointer', color: 'black' }}
+                                                title='Edit'
+                                            />
+                                            <AiOutlineDelete
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleDelete(room.id);
+                                                }}
+                                                style={{ cursor: 'pointer' }}
+                                                title='Delete'
+                                            />
+                                        </span>
+                                    </li>
+                                ))}
                         </ul>
                     </div>
                 </div>

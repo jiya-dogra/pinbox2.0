@@ -235,39 +235,41 @@ export default function ManageEmployees() {
                                     <span style={{ gridColumn: '1 / -1' }}>Loading employees...</span>
                                 </li>
                             )}
-                            {employees.map((employee, index) => (
-                                <li
-                                    key={employee.id}
-                                    className={activeRow === index ? style.active : ''}
-                                    onClick={() => setActiveRow(index)}
-                                >
-                                    <span style={{ justifySelf: 'center' }}>{index + 1}</span>
-                                    <span>{employee.fullName}</span>
-                                    <span>{employee.email}</span>
-                                    <span
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleRoomAssignClick(employee.id);
-                                        }}
-                                        style={{
-                                            cursor: 'pointer',
-                                            color: employee.room ? 'inherit' : '#999',
-                                            textDecoration: 'underline'
-                                        }}
+                            {employees
+                                .sort((a, b) => a.fullName.localeCompare(b.fullName))
+                                .map((employee, index) => (
+                                    <li
+                                        key={employee.id}
+                                        className={activeRow === index ? style.active : ''}
+                                        onClick={() => setActiveRow(index)}
                                     >
-                                        {employee.room ? employee.room.name : 'N/A'}
-                                    </span>
-                                    <span
-                                        style={{ justifySelf: 'center', cursor: 'pointer' }}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleEditClick(employee);
-                                        }}
-                                    >
-                                        Edit...
-                                    </span>
-                                </li>
-                            ))}
+                                        <span style={{ justifySelf: 'center' }}>{index + 1}</span>
+                                        <span>{employee.fullName}</span>
+                                        <span>{employee.email}</span>
+                                        <span
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleRoomAssignClick(employee.id);
+                                            }}
+                                            style={{
+                                                cursor: 'pointer',
+                                                color: employee.room ? 'inherit' : '#999',
+                                                textDecoration: 'underline'
+                                            }}
+                                        >
+                                            {employee.room ? employee.room.name : 'N/A'}
+                                        </span>
+                                        <span
+                                            style={{ justifySelf: 'center', cursor: 'pointer' }}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleEditClick(employee);
+                                            }}
+                                        >
+                                            Edit...
+                                        </span>
+                                    </li>
+                                ))}
                         </ul>
                     </div>
                 </div>
@@ -314,7 +316,6 @@ export default function ManageEmployees() {
                                         <button
                                             type="button"
                                             onClick={handleDelete}
-                                            className={style.deleteButton}
                                             disabled={isDeleting}
                                         >{isDeleting ? 'Deleting...' : <>Delete</>}</button>
                                     )}

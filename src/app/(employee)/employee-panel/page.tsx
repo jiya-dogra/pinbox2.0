@@ -1,27 +1,21 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import EmployeeHeader from '@/src/components/employeeheader';
+import style from '@/src/styles/admin.module.css';
+import ProtectedRoute from '@/src/components/ProtectedRoute';
 
 export default function EmployeePanel() {
-    const router = useRouter();
-
-    useEffect(() => {
-        // Verify employee is logged in
-        const userType = localStorage.getItem('userType');
-        if (userType !== 'employee') {
-            router.push('/login');
-        }
-    }, [router]);
 
     return (
-        <div>
-            <EmployeeHeader />
-            <div className="employee-dashboard">
-                <h1>Employee Dashboard</h1>
-                {/* Add employee-specific content here */}
+        <ProtectedRoute>
+            <div>
+                <EmployeeHeader />
+                <div className={style.wrapper}>
+                    <div className={style.content}>
+                        <p>Employee Panel</p>
+                    </div>
+                </div>
             </div>
-        </div>
+        </ProtectedRoute>
     );
 }

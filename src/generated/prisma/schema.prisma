@@ -26,7 +26,7 @@ model Company {
 
   admin Admin? // one-to-one relation
   users User[] // one-to-many relation
-  rooms Room[]
+  Room  Room[]
 
   @@unique([name, address])
 }
@@ -48,17 +48,19 @@ model User {
   password  String
   company   Company  @relation(fields: [companyId], references: [id])
   companyId String
-  rooms     Room[]   @relation("UserRooms")
   createdAt DateTime @default(now())
+  room      Room?    @relation(fields: [roomId], references: [id])
+  roomId    String?
 }
 
 model Room {
-  id        String   @id @default(uuid())
-  name      String
-  company   Company  @relation(fields: [companyId], references: [id])
-  companyId String
-  users     User[]   @relation("UserRooms")
-  createdAt DateTime @default(now())
+  id                String   @id @default(uuid())
+  name              String
+  company           Company  @relation(fields: [companyId], references: [id])
+  companyId         String
+  users             User[]
+  userPriorityOrder String[]
+  createdAt         DateTime @default(now())
 
-  @@unique([name, companyId]) // Unique room names per company
+  @@unique([name, companyId]) // Ensures room names are unique per company
 }

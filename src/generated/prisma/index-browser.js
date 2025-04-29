@@ -144,7 +144,8 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   companyId: 'companyId',
   createdAt: 'createdAt',
-  roomId: 'roomId'
+  roomId: 'roomId',
+  priority: 'priority'
 };
 
 exports.Prisma.RoomScalarFieldEnum = {

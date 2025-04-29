@@ -7,17 +7,41 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { fullName, email, password } = await request.json();
-    
-    // Validate input
-    if (!fullName || !email || !password) {
+    const { id } = params;
+    // First await the request.json()
+    const input = await request.json();
+
+    // Priority update
+    if (input.priority !== undefined) {
+      const priority = Number(input.priority);
+
+      if (isNaN(priority) || priority < 1) {
+        return NextResponse.json(
+          { error: 'Priority must be a positive integer' },
+          { status: 400 }
+        );
+      }
+
+      // Update only the priority field
+      const updatedUser = await prisma.user.update({
+        where: { id }, // Now using the properly destructured id
+        data: { priority }
+      });
+
+      return NextResponse.json({
+        message: 'Priority updated successfully',
+        priority: updatedUser.priority
+      });
+    }
+
+    // Regular user update (existing code)
+    if (!input.fullName || !input.email || !input.password) {
       return NextResponse.json(
         { error: 'All fields are required' },
         { status: 400 }
       );
     }
 
-    // Check if user exists
     const existingUser = await prisma.user.findUnique({
       where: { id: params.id }
     });
@@ -29,12 +53,11 @@ export async function PUT(
       );
     }
 
-    // Check if email is being changed to an existing email
-    if (email !== existingUser.email) {
+    if (input.email !== existingUser.email) {
       const emailExists = await prisma.user.findUnique({
-        where: { email }
+        where: { email: input.email }
       });
-      
+
       if (emailExists) {
         return NextResponse.json(
           { error: 'Email already in use' },
@@ -43,13 +66,12 @@ export async function PUT(
       }
     }
 
-    // Update user
     const updatedUser = await prisma.user.update({
       where: { id: params.id },
       data: {
-        fullName,
-        email,
-        password // Remember to hash in production
+        fullName: input.fullName,
+        email: input.email,
+        password: input.password
       }
     });
 

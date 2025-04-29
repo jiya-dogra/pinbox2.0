@@ -3449,8 +3449,18 @@ export namespace Prisma {
 
   export type AggregateUser = {
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
+  }
+
+  export type UserAvgAggregateOutputType = {
+    priority: number | null
+  }
+
+  export type UserSumAggregateOutputType = {
+    priority: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -3461,6 +3471,7 @@ export namespace Prisma {
     companyId: string | null
     createdAt: Date | null
     roomId: string | null
+    priority: number | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -3471,6 +3482,7 @@ export namespace Prisma {
     companyId: string | null
     createdAt: Date | null
     roomId: string | null
+    priority: number | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -3481,9 +3493,18 @@ export namespace Prisma {
     companyId: number
     createdAt: number
     roomId: number
+    priority: number
     _all: number
   }
 
+
+  export type UserAvgAggregateInputType = {
+    priority?: true
+  }
+
+  export type UserSumAggregateInputType = {
+    priority?: true
+  }
 
   export type UserMinAggregateInputType = {
     id?: true
@@ -3493,6 +3514,7 @@ export namespace Prisma {
     companyId?: true
     createdAt?: true
     roomId?: true
+    priority?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -3503,6 +3525,7 @@ export namespace Prisma {
     companyId?: true
     createdAt?: true
     roomId?: true
+    priority?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -3513,6 +3536,7 @@ export namespace Prisma {
     companyId?: true
     createdAt?: true
     roomId?: true
+    priority?: true
     _all?: true
   }
 
@@ -3554,6 +3578,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: UserAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
@@ -3584,6 +3620,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UserCountAggregateInputType | true
+    _avg?: UserAvgAggregateInputType
+    _sum?: UserSumAggregateInputType
     _min?: UserMinAggregateInputType
     _max?: UserMaxAggregateInputType
   }
@@ -3596,7 +3634,10 @@ export namespace Prisma {
     companyId: string
     createdAt: Date
     roomId: string | null
+    priority: number | null
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
@@ -3623,6 +3664,7 @@ export namespace Prisma {
     companyId?: boolean
     createdAt?: boolean
     roomId?: boolean
+    priority?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     room?: boolean | User$roomArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -3635,6 +3677,7 @@ export namespace Prisma {
     companyId?: boolean
     createdAt?: boolean
     roomId?: boolean
+    priority?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     room?: boolean | User$roomArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -3647,6 +3690,7 @@ export namespace Prisma {
     companyId?: boolean
     createdAt?: boolean
     roomId?: boolean
+    priority?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     room?: boolean | User$roomArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -3659,9 +3703,10 @@ export namespace Prisma {
     companyId?: boolean
     createdAt?: boolean
     roomId?: boolean
+    priority?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "companyId" | "createdAt" | "roomId", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "companyId" | "createdAt" | "roomId" | "priority", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     room?: boolean | User$roomArgs<ExtArgs>
@@ -3689,6 +3734,7 @@ export namespace Prisma {
       companyId: string
       createdAt: Date
       roomId: string | null
+      priority: number | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -4121,6 +4167,7 @@ export namespace Prisma {
     readonly companyId: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly roomId: FieldRef<"User", 'String'>
+    readonly priority: FieldRef<"User", 'Int'>
   }
     
 
@@ -5676,7 +5723,8 @@ export namespace Prisma {
     password: 'password',
     companyId: 'companyId',
     createdAt: 'createdAt',
-    roomId: 'roomId'
+    roomId: 'roomId',
+    priority: 'priority'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -5760,6 +5808,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
   /**
    * Deep Input Types
@@ -5914,6 +5976,7 @@ export namespace Prisma {
     companyId?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     roomId?: StringNullableFilter<"User"> | string | null
+    priority?: IntNullableFilter<"User"> | number | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
   }
@@ -5926,6 +5989,7 @@ export namespace Prisma {
     companyId?: SortOrder
     createdAt?: SortOrder
     roomId?: SortOrderInput | SortOrder
+    priority?: SortOrderInput | SortOrder
     company?: CompanyOrderByWithRelationInput
     room?: RoomOrderByWithRelationInput
   }
@@ -5941,6 +6005,7 @@ export namespace Prisma {
     companyId?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     roomId?: StringNullableFilter<"User"> | string | null
+    priority?: IntNullableFilter<"User"> | number | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
   }, "id" | "email">
@@ -5953,9 +6018,12 @@ export namespace Prisma {
     companyId?: SortOrder
     createdAt?: SortOrder
     roomId?: SortOrderInput | SortOrder
+    priority?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
+    _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
+    _sum?: UserSumOrderByAggregateInput
   }
 
   export type UserScalarWhereWithAggregatesInput = {
@@ -5969,6 +6037,7 @@ export namespace Prisma {
     companyId?: StringWithAggregatesFilter<"User"> | string
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     roomId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    priority?: IntNullableWithAggregatesFilter<"User"> | number | null
   }
 
   export type RoomWhereInput = {
@@ -6182,6 +6251,7 @@ export namespace Prisma {
     email: string
     password: string
     createdAt?: Date | string
+    priority?: number | null
     company: CompanyCreateNestedOneWithoutUsersInput
     room?: RoomCreateNestedOneWithoutUsersInput
   }
@@ -6194,6 +6264,7 @@ export namespace Prisma {
     companyId: string
     createdAt?: Date | string
     roomId?: string | null
+    priority?: number | null
   }
 
   export type UserUpdateInput = {
@@ -6202,6 +6273,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableIntFieldUpdateOperationsInput | number | null
     company?: CompanyUpdateOneRequiredWithoutUsersNestedInput
     room?: RoomUpdateOneWithoutUsersNestedInput
   }
@@ -6214,6 +6286,7 @@ export namespace Prisma {
     companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    priority?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type UserCreateManyInput = {
@@ -6224,6 +6297,7 @@ export namespace Prisma {
     companyId: string
     createdAt?: Date | string
     roomId?: string | null
+    priority?: number | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -6232,6 +6306,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -6242,6 +6317,7 @@ export namespace Prisma {
     companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    priority?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type RoomCreateInput = {
@@ -6487,6 +6563,17 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type RoomNullableScalarRelationFilter = {
     is?: RoomWhereInput | null
     isNot?: RoomWhereInput | null
@@ -6500,6 +6587,11 @@ export namespace Prisma {
     companyId?: SortOrder
     createdAt?: SortOrder
     roomId?: SortOrder
+    priority?: SortOrder
+  }
+
+  export type UserAvgOrderByAggregateInput = {
+    priority?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -6510,6 +6602,7 @@ export namespace Prisma {
     companyId?: SortOrder
     createdAt?: SortOrder
     roomId?: SortOrder
+    priority?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -6520,6 +6613,27 @@ export namespace Prisma {
     companyId?: SortOrder
     createdAt?: SortOrder
     roomId?: SortOrder
+    priority?: SortOrder
+  }
+
+  export type UserSumOrderByAggregateInput = {
+    priority?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type RoomNameCompanyIdCompoundUniqueInput = {
@@ -6700,6 +6814,14 @@ export namespace Prisma {
     create?: XOR<RoomCreateWithoutUsersInput, RoomUncheckedCreateWithoutUsersInput>
     connectOrCreate?: RoomCreateOrConnectWithoutUsersInput
     connect?: RoomWhereUniqueInput
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type CompanyUpdateOneRequiredWithoutUsersNestedInput = {
@@ -6885,6 +7007,33 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type AdminCreateWithoutCompanyInput = {
     id?: string
     fullName: string
@@ -6912,6 +7061,7 @@ export namespace Prisma {
     email: string
     password: string
     createdAt?: Date | string
+    priority?: number | null
     room?: RoomCreateNestedOneWithoutUsersInput
   }
 
@@ -6922,6 +7072,7 @@ export namespace Prisma {
     password: string
     createdAt?: Date | string
     roomId?: string | null
+    priority?: number | null
   }
 
   export type UserCreateOrConnectWithoutCompanyInput = {
@@ -7012,6 +7163,7 @@ export namespace Prisma {
     companyId?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     roomId?: StringNullableFilter<"User"> | string | null
+    priority?: IntNullableFilter<"User"> | number | null
   }
 
   export type RoomUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -7257,6 +7409,7 @@ export namespace Prisma {
     email: string
     password: string
     createdAt?: Date | string
+    priority?: number | null
     company: CompanyCreateNestedOneWithoutUsersInput
   }
 
@@ -7267,6 +7420,7 @@ export namespace Prisma {
     password: string
     companyId: string
     createdAt?: Date | string
+    priority?: number | null
   }
 
   export type UserCreateOrConnectWithoutRoomInput = {
@@ -7339,6 +7493,7 @@ export namespace Prisma {
     password: string
     createdAt?: Date | string
     roomId?: string | null
+    priority?: number | null
   }
 
   export type RoomCreateManyCompanyInput = {
@@ -7353,6 +7508,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableIntFieldUpdateOperationsInput | number | null
     room?: RoomUpdateOneWithoutUsersNestedInput
   }
 
@@ -7363,6 +7519,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    priority?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type UserUncheckedUpdateManyWithoutCompanyInput = {
@@ -7372,6 +7529,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    priority?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type RoomUpdateWithoutCompanyInput = {
@@ -7401,6 +7559,7 @@ export namespace Prisma {
     password: string
     companyId: string
     createdAt?: Date | string
+    priority?: number | null
   }
 
   export type UserUpdateWithoutRoomInput = {
@@ -7409,6 +7568,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableIntFieldUpdateOperationsInput | number | null
     company?: CompanyUpdateOneRequiredWithoutUsersNestedInput
   }
 
@@ -7419,6 +7579,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type UserUncheckedUpdateManyWithoutRoomInput = {
@@ -7428,6 +7589,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
 

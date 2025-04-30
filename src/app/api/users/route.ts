@@ -1,6 +1,6 @@
 // /app/api/users/route.ts
 import { NextResponse } from 'next/server';
-import { prisma } from '@/src/lib/prisma';
+import prisma from '@/src/lib/prisma';
 
 export async function GET(request: Request) {
   try {
@@ -28,16 +28,16 @@ export async function GET(request: Request) {
 
     // Fetch users for this company
     const users = await prisma.user.findMany({
-  where: { companyId: admin.companyId },
-  include: {
-    room: {
-      select: {
-        id: true,
-        name: true
+      where: { companyId: admin.companyId },
+      include: {
+        room: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
       }
-    }
-  }
-});
+    });
 
     return NextResponse.json(users);
 

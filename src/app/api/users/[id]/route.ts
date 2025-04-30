@@ -1,6 +1,6 @@
 // /app/api/users/[id]/route.ts
 import { NextResponse } from 'next/server';
-import { prisma } from '@/src/lib/prisma';
+import prisma from '@/src/lib/prisma';
 
 export async function PUT(
   request: Request,
@@ -94,6 +94,17 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    // First delete all tasks assigned by this user
+    await prisma.task.deleteMany({
+      where: { assignedById: params.id }
+    });
+
+    // Then delete all tasks assigned to this user
+    await prisma.task.deleteMany({
+      where: { assignedToId: params.id }
+    });
+
+    // Finally delete the user
     await prisma.user.delete({
       where: { id: params.id }
     });

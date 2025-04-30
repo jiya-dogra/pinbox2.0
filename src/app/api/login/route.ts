@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/src/lib/prisma';
+import prisma from '@/src/lib/prisma';
 
 export async function POST(req: Request) {
   try {
@@ -20,12 +20,12 @@ export async function POST(req: Request) {
           { status: 401 }
         );
       }
-      return NextResponse.json({ 
+      return NextResponse.json({
         message: 'Admin login successful',
         userType: 'admin',
         userId: admin.id
       });
-    } 
+    }
     else if (userType === 'employee') {
       const employee = await prisma.user.findUnique({ where: { email } });
       if (!employee || employee.password !== password) {
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
           { status: 401 }
         );
       }
-      return NextResponse.json({ 
+      return NextResponse.json({
         message: 'Employee login successful',
         userType: 'employee',
         userId: employee.id

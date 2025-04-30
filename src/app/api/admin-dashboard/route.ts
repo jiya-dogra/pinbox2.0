@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/src/lib/prisma';
+import prisma from '@/src/lib/prisma';
 
 export async function GET() {
   try {
@@ -17,16 +17,16 @@ export async function GET() {
     ]);
 
     return NextResponse.json({
-        totalEmployees,
-        totalRooms,
-        roomOccupancy: rooms.map(room => ({
-            name: room.name,
-            count: room._count.users
-        })),
-        employeesPerRoom: rooms.map(room => ({
-            name: room.name,
-            count: room._count.users
-        }))
+      totalEmployees,
+      totalRooms,
+      roomOccupancy: rooms.map(room => ({
+        name: room.name,
+        count: room._count.users
+      })),
+      employeesPerRoom: rooms.map(room => ({
+        name: room.name,
+        count: room._count.users
+      }))
     });
   } catch (error) {
     return NextResponse.json(

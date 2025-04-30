@@ -23,10 +23,9 @@ model Company {
   address      String
   website      String?
   createdAt    DateTime @default(now())
-
-  admin Admin? // one-to-one relation
-  users User[] // one-to-many relation
-  Room  Room[]
+  admin        Admin?
+  users        User[]
+  Room         Room[]
 
   @@unique([name, address])
 }
@@ -42,16 +41,18 @@ model Admin {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  fullName  String
-  email     String   @unique
-  password  String
-  company   Company  @relation(fields: [companyId], references: [id])
-  companyId String
-  createdAt DateTime @default(now())
-  room      Room?    @relation(fields: [roomId], references: [id])
-  roomId    String?
-  priority  Int?     @default(1)
+  id            String   @id @default(uuid())
+  fullName      String
+  email         String   @unique
+  password      String
+  company       Company  @relation(fields: [companyId], references: [id])
+  companyId     String
+  createdAt     DateTime @default(now())
+  room          Room?    @relation(fields: [roomId], references: [id])
+  roomId        String?
+  priority      Int?     @default(1)
+  tasksAssigned Task[]   @relation("TaskAssignedBy") // No default = empty array
+  tasksReceived Task[]   @relation("TaskAssignedTo") // No default = empty array
 }
 
 model Room {
@@ -63,4 +64,17 @@ model Room {
   createdAt DateTime @default(now())
 
   @@unique([name, companyId]) // Ensures room names are unique per company
+}
+
+model Task {
+  id           String   @id @default(uuid())
+  title        String
+  description  String?
+  dueDate      DateTime
+  status       String   @default("pending")
+  assignedBy   User     @relation("TaskAssignedBy", fields: [assignedById], references: [id])
+  assignedById String
+  assignedTo   User     @relation("TaskAssignedTo", fields: [assignedToId], references: [id])
+  assignedToId String
+  createdAt    DateTime @default(now())
 }

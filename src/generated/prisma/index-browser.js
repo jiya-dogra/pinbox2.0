@@ -155,6 +155,17 @@ exports.Prisma.RoomScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.TaskScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  dueDate: 'dueDate',
+  status: 'status',
+  assignedById: 'assignedById',
+  assignedToId: 'assignedToId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -175,7 +186,8 @@ exports.Prisma.ModelName = {
   Company: 'Company',
   Admin: 'Admin',
   User: 'User',
-  Room: 'Room'
+  Room: 'Room',
+  Task: 'Task'
 };
 
 /**

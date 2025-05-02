@@ -20,14 +20,19 @@ export interface Employee {
     priority?: number;
 }
 
+export type TaskStatus = 'pending' | 'completed';
+
 export interface Task {
     id: string;
     title: string;
     description?: string;
     dueDate: Date;
-    status: 'pending' | 'in-progress' | 'completed';
+    status: 'pending' | 'completed';
     assignedById: string;
     assignedToId: string;
+    assignedTo?: {
+        fullName: string;
+    };
     assignedBy?: {
         fullName: string;
     };

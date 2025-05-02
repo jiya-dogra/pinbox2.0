@@ -53,6 +53,8 @@ model User {
   priority      Int?     @default(1)
   tasksAssigned Task[]   @relation("TaskAssignedBy") // No default = empty array
   tasksReceived Task[]   @relation("TaskAssignedTo") // No default = empty array
+
+  CalendarEvent CalendarEvent[]
 }
 
 model Room {
@@ -77,4 +79,17 @@ model Task {
   assignedTo   User     @relation("TaskAssignedTo", fields: [assignedToId], references: [id])
   assignedToId String
   createdAt    DateTime @default(now())
+}
+
+model CalendarEvent {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  start       DateTime
+  end         DateTime?
+  type        String // 'task' | 'holiday' | 'event'
+  status      String? // Only for tasks
+  createdBy   User      @relation(fields: [createdById], references: [id])
+  createdById String
+  createdAt   DateTime  @default(now())
 }

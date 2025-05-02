@@ -136,7 +136,7 @@
 }
 
 .roomItem:hover {
-    background-color: #f1f1f1;
+    background-color: #f0f0f0;
 }
 
 .roomItem:last-child {
@@ -379,5 +379,5 @@
 }
 
 .cancelButton:hover {
-    background-color: #e0e0e0;
+    background-color: #f0f0f0;
 }

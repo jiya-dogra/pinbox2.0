@@ -1,6 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import style from '@/src/styles/employee.module.css';
+import { Task } from '../types/types';
 
 interface TaskFormProps {
     employees: { id: string; fullName: string; priority?: number }[];
@@ -8,6 +9,8 @@ interface TaskFormProps {
     currentUserPriority: number;
     isOpen: boolean;
     onClose: () => void;
+    initialData?: Task | null; // Make sure to import your Task type
+    isEditing?: boolean;
 }
 
 export default function TaskForm({
@@ -15,22 +18,39 @@ export default function TaskForm({
     onSubmit,
     currentUserPriority,
     isOpen,
-    onClose
+    onClose,
+    initialData = null,
+    isEditing = false
 }: TaskFormProps) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [dueDate, setDueDate] = useState('');
     const [assignedToId, setAssignedToId] = useState('');
 
+    useEffect(() => {
+        if (initialData) {
+            setTitle(initialData.title);
+            setDescription(initialData.description || '');
+            setDueDate(initialData.dueDate ? new Date(initialData.dueDate).toISOString().slice(0, 16) : '');
+            setAssignedToId(initialData.assignedToId);
+        } else {
+            setTitle('');
+            setDescription('');
+            setDueDate('');
+            setAssignedToId('');
+        }
+    }, [initialData]);
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onSubmit({ title, description, dueDate, assignedToId });
-        // Reset form
-        setTitle('');
-        setDescription('');
-        setDueDate('');
-        setAssignedToId('');
-        onClose();
+        if (!isEditing) {
+            // Only reset if not editing (parent component handles editing state)
+            setTitle('');
+            setDescription('');
+            setDueDate('');
+            setAssignedToId('');
+        }
     };
 
     if (!isOpen) return null;
@@ -41,7 +61,7 @@ export default function TaskForm({
     return (
         <div className={style.dialogOverlay}>
             <div className={style.dialog}>
-                <h2>Assign New Task</h2>
+                <h2>{isEditing ? 'Edit Task' : 'Assign New Task'}</h2>
 
                 <form onSubmit={handleSubmit} className={style.taskFormGrid}>
                     <div className={style.formGroup}>
@@ -82,6 +102,7 @@ export default function TaskForm({
                             value={assignedToId}
                             onChange={(e) => setAssignedToId(e.target.value)}
                             required
+                            disabled={isEditing} // Optional: disable changing assignment when editing
                         >
                             <option value="">Select employee</option>
                             {eligibleEmployees.length > 0 ? (
@@ -98,18 +119,17 @@ export default function TaskForm({
                         </select>
                     </div>
 
-                    <div className={style.dialogButtons}>
-                        <button type="button" onClick={onClose} className={style.cancelButton}>
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            className={style.submitButton}
-                            disabled={eligibleEmployees.length === 0}
-                        >
-                            Assign Task
-                        </button>
-                    </div>
+                    <button type="button" onClick={onClose} className={style.cancelButton}>
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        className={style.submitButton}
+                        disabled={eligibleEmployees.length === 0 && !isEditing}
+                        style={{ justifySelf: 'end' }}
+                    >
+                        {isEditing ? 'Confirm Changes' : 'Assign Task'}
+                    </button>
                 </form>
             </div>
         </div>

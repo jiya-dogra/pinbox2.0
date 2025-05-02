@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/src/lib/prisma';
 
+// In your tasks route.ts
 export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
@@ -14,12 +15,18 @@ export async function GET(request: Request) {
         }
 
         const tasks = await prisma.task.findMany({
-            where: { assignedToId: userId },
+            where: {
+                OR: [
+                    { assignedToId: userId },
+                    { assignedById: userId }
+                ]
+            },
             orderBy: { dueDate: 'asc' },
             include: {
-                assignedBy: { select: { fullName: true } }
+                assignedBy: { select: { fullName: true } },
+                assignedTo: { select: { fullName: true } }
             }
-        }) || [];
+        });
 
         return NextResponse.json(tasks || []);
     } catch (err) {
@@ -68,6 +75,10 @@ export async function POST(request: Request) {
                 assignedById,
                 assignedToId,
                 status: 'pending'
+            },
+            include: {  // Add this to include relations in response
+                assignedBy: { select: { fullName: true } },
+                assignedTo: { select: { fullName: true } }
             }
         });
 

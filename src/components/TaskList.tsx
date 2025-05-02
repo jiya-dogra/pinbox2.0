@@ -1,42 +1,156 @@
 import style from '@/src/styles/employee.module.css';
+import { useState } from 'react';
+import { Task } from '../types/types';
+import { FaTrash, FaEdit } from 'react-icons/fa';
 
-interface Task {
-    id: string;
-    title: string;
-    description?: string;
-    dueDate: Date | string;
-    status: string;
-    assignedBy?: {
-        fullName: string;
-    };
-}
+type TaskStatus = 'pending' | 'completed';
 
 interface TaskListProps {
-    tasks: Task[] | null | undefined; // Handle all possible types
+    tasks: Task[] | null | undefined;
     onTaskClick: (task: Task) => void;
+    onStatusChange: (taskId: string, newStatus: TaskStatus) => void;
+    onDeleteTask: (taskId: string) => void;
+    onEditTask: (task: Task) => void;
 }
 
-export default function TaskList({ tasks, onTaskClick }: TaskListProps) {
-    // Safeguard against non-array tasks
+export default function TaskList({
+    tasks,
+    onTaskClick,
+    onStatusChange,
+    onDeleteTask,
+    onEditTask
+}: TaskListProps) {
     const safeTasks = Array.isArray(tasks) ? tasks : [];
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+    const [newStatus, setNewStatus] = useState<TaskStatus | null>(null);
+
+    const handleStatusClick = (task: Task, e: React.MouseEvent) => {
+        e.stopPropagation();
+        const nextStatus: TaskStatus = task.status === 'pending' ? 'completed' : 'pending';
+        setSelectedTask(task);
+        setNewStatus(nextStatus);
+        setShowConfirm(true);
+    };
+
+    const handleDeleteClick = (task: Task, e: React.MouseEvent) => {
+        e.stopPropagation();
+        setSelectedTask(task);
+        setShowDeleteConfirm(true);
+    };
+
+    const handleEditClick = (task: Task, e: React.MouseEvent) => {
+        e.stopPropagation();
+        onEditTask(task);
+    };
+
+    const confirmStatusChange = () => {
+        if (selectedTask && newStatus) {
+            onStatusChange(selectedTask.id, newStatus);
+        }
+        setShowConfirm(false);
+    };
+
+    const confirmDelete = () => {
+        if (selectedTask) {
+            onDeleteTask(selectedTask.id);
+        }
+        setShowDeleteConfirm(false);
+    };
+
+    const cancelAction = () => {
+        setShowConfirm(false);
+        setShowDeleteConfirm(false);
+        setSelectedTask(null);
+        setNewStatus(null);
+    };
 
     return (
         <div className={style.taskList}>
             {safeTasks.length > 0 ? (
                 safeTasks.map(task => (
                     <div key={task.id} className={style.taskItem} onClick={() => onTaskClick(task)}>
-                        <h3>{task.title}</h3>
-                        <p>{task.description}</p>
-                        <div className={style.taskMeta}>
-                            <span>Due: {new Date(task.dueDate).toLocaleDateString()}</span>
-                            <span className={`${style.taskStatus} ${style[task.status]}`}>
+                        <div>
+                            <h3>{task.title}</h3>
+                            <p>{task.description}</p>
+                            {task.assignedBy && <p>Assigned By: {task.assignedBy.fullName}</p>}
+                            {task.assignedTo && <p>Assigned To: {task.assignedTo.fullName}</p>}
+                            <p>Due: {new Date(task.dueDate).toLocaleDateString()}</p>
+                        </div>
+                        <div style={{ display: 'grid', gridTemplateRows: '1fr 1fr', justifyItems: 'end' }}>
+                            <FaEdit
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onEditTask(task);
+                                }}
+                                style={{ cursor: 'pointer' }}
+                                title="Edit Task"
+                            />
+                            <FaTrash
+                                onClick={(e) => handleDeleteClick(task, e)}
+                                style={{ cursor: 'pointer' }}
+                                title="Delete Task"
+                            />
+                            <p
+                                title='Change Status'
+                                className={`${style.taskStatus} ${style[task.status]}`}
+                                onClick={(e) => handleStatusClick(task, e)}
+                            >
                                 {task.status}
-                            </span>
+                            </p>
                         </div>
                     </div>
                 ))
             ) : (
                 <p className={style.noTasks}>No tasks found</p>
+            )}
+
+            {/* Status Change Confirmation Dialog */}
+            {showConfirm && selectedTask && newStatus && (
+                <div className={style.dialogOverlay}>
+                    <div className={style.dialog}>
+                        <h2>Confirm Status Change</h2>
+                        <p>Are you sure you want to change this task from "{selectedTask.status}" to "{newStatus}"?</p>
+                        <button
+                            onClick={cancelAction}
+                            className={style.cancelButton}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={confirmStatusChange}
+                            className={style.submitButton}
+                            style={{ marginLeft: '2em' }}
+                        >
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Delete Confirmation Dialog */}
+            {showDeleteConfirm && selectedTask && (
+                <div className={style.dialogOverlay}>
+                    <div className={style.dialog}>
+                        <h2>Confirm Deletion</h2>
+                        <p>Are you sure you want to delete the task "{selectedTask.title}"?</p>
+                        <p>This action cannot be undone.</p>
+                        <button
+                            onClick={cancelAction}
+                            className={style.cancelButton}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={confirmDelete}
+                            className={style.submitButton}
+                            style={{ marginLeft: '2em', backgroundColor: '#ff4444', color: 'white' }}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                </div>
             )}
         </div>
     );

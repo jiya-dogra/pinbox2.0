@@ -166,6 +166,18 @@ exports.Prisma.TaskScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.CalendarEventScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  start: 'start',
+  end: 'end',
+  type: 'type',
+  status: 'status',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -187,7 +199,8 @@ exports.Prisma.ModelName = {
   Admin: 'Admin',
   User: 'User',
   Room: 'Room',
-  Task: 'Task'
+  Task: 'Task',
+  CalendarEvent: 'CalendarEvent'
 };
 
 /**

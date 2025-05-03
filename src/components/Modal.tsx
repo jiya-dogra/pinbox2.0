@@ -10,9 +10,6 @@ export function Modal({ children, onClose }: ModalProps) {
     return (
         <div className={style.modalOverlay}>
             <div className={style.modal}>
-                <button className={style.closeButton} onClick={onClose}>
-                    &times;
-                </button>
                 {children}
             </div>
         </div>

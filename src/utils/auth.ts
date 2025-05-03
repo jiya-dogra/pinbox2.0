@@ -36,15 +36,8 @@ export const isEmployee = () => {
 };
 
 export const getAdminId = () => {
-    if (typeof window === 'undefined') {
-        return null;
-    }
-    return localStorage.getItem('adminId');
-};
-
-export const getAdminEmail = () => {
-    if (typeof window === 'undefined') {
-        return null;
-    }
-    return localStorage.getItem('adminEmail');
+  if (typeof window === 'undefined') {
+    return null;
+  }
+  return localStorage.getItem('userId');
 };

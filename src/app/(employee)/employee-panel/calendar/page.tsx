@@ -10,7 +10,7 @@ import EmployeeHeader from '@/src/components/employeeheader';
 import style from '@/src/styles/employee.module.css';
 import ProtectedRoute from '@/src/components/ProtectedRoute';
 import { Modal } from '@/src/components/Modal';
-import TaskForm from '@/src/components/TaskForm'; // Import your existing TaskForm
+import TaskForm from '@/src/components/TaskForm';
 
 export default function Calendar() {
     const calendarRef = useRef<FullCalendar>(null);
@@ -45,7 +45,7 @@ export default function Calendar() {
             // Transform tasks to calendar events
             const taskEvents = tasks.map((task: any) => ({
                 id: `task_${task.id}`,
-                title: task.title, // Remove "Task: " prefix for cleaner display
+                title: task.title,
                 start: task.dueDate,
                 extendedProps: {
                     description: task.description,
@@ -57,13 +57,14 @@ export default function Calendar() {
                 backgroundColor: task.status === 'completed' ? '#dcfce7' : '#fef3c7',
                 borderColor: task.status === 'completed' ? '#166534' : '#92400e',
                 textColor: '#000000',
-                editable: false
+                editable: false,
+                classNames: ['task-event']
             }));
 
             // Transform calendar events
             const formattedEvents = calendarEvents.map((event: any) => ({
                 id: `event_${event.id}`,
-                title: event.title, // Remove "Event: " prefix for cleaner display
+                title: event.title,
                 start: event.start,
                 end: event.end,
                 extendedProps: {
@@ -71,10 +72,11 @@ export default function Calendar() {
                     type: event.type,
                     isTask: false
                 },
-                backgroundColor: '#ffffff',
-                borderColor: '#000000',
+                backgroundColor: '#e0e7ff',
+                borderColor: '#4f46e5',
                 textColor: '#000000',
-                editable: true
+                editable: true,
+                classNames: ['calendar-event']
             }));
 
             setEvents([...taskEvents, ...formattedEvents]);
@@ -99,12 +101,14 @@ export default function Calendar() {
     const handleEventClick = (clickInfo: EventClickArg) => {
         const event = clickInfo.event;
 
-        // Don't open modal for tasks
-        if (event.extendedProps.isTask) return;
+        // Extract the real ID (remove 'event_' prefix if present)
+        const eventId = event.id.startsWith('event_')
+            ? event.id.replace('event_', '')
+            : event.id;
 
         setCurrentEvent({
-            id: event.id.replace('event_', ''),
-            title: event.title.replace('Event: ', ''),
+            id: eventId,
+            title: event.title,
             description: event.extendedProps.description || '',
             start: event.start?.toISOString() || '',
             end: event.end?.toISOString() || '',
@@ -158,6 +162,24 @@ export default function Calendar() {
         }
     };
 
+    const handleEventDelete = async () => {
+        try {
+            if (!currentEvent.id) return;
+
+            const response = await fetch(`/api/calendar-events/${currentEvent.id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            if (response.ok) {
+                fetchEvents();
+                setShowEventModal(false);
+            }
+        } catch (error) {
+            console.error('Error deleting event:', error);
+        }
+    };
+
     return (
         <ProtectedRoute>
             <div>
@@ -179,65 +201,90 @@ export default function Calendar() {
                             editable={true}
                             eventContent={renderEventContent}
                             height="auto"
-                            eventDisplay="block" // Ensure events are displayed as blocks
-                            eventTextColor="#000000" // Force black text for all events
+                            eventDisplay="block"
+                            eventTextColor="#000000"
                             eventTimeFormat={{
                                 hour: '2-digit',
                                 minute: '2-digit',
                                 hour12: true
                             }}
+                            dayHeaderClassNames={style.dayHeader}
+                            dayCellClassNames={style.dayCell}
+                            nowIndicator={true}
                         />
                     </div>
                 </div>
-
-                {/* Event Modal */}
                 {showEventModal && (
                     <Modal onClose={() => setShowEventModal(false)}>
-                        <h2>{currentEvent.id ? 'Edit Event' : 'Add New Event'}</h2>
-                        <div className={style.formGroup}>
-                            <label>Title</label>
-                            <input
-                                type="text"
-                                value={currentEvent.title}
-                                onChange={(e) => setCurrentEvent({ ...currentEvent, title: e.target.value })}
-                            />
-                        </div>
-                        <div className={style.formGroup}>
-                            <label>Description</label>
-                            <textarea
-                                value={currentEvent.description}
-                                onChange={(e) => setCurrentEvent({ ...currentEvent, description: e.target.value })}
-                            />
-                        </div>
-                        <div className={style.formGroup}>
-                            <label>Start</label>
-                            <input
-                                type="datetime-local"
-                                value={currentEvent.start}
-                                onChange={(e) => setCurrentEvent({ ...currentEvent, start: e.target.value })}
-                            />
-                        </div>
-                        <div className={style.formGroup}>
-                            <label>End</label>
-                            <input
-                                type="datetime-local"
-                                value={currentEvent.end}
-                                onChange={(e) => setCurrentEvent({ ...currentEvent, end: e.target.value })}
-                            />
-                        </div>
-                        <div className={style.formActions}>
-                            <button onClick={() => setShowEventModal(false)}>Cancel</button>
-                            <button onClick={handleEventSubmit}>Save</button>
+                        <div className={style.modalContent}>
+                            <h2 className={style.modalTitle}>{currentEvent.id ? 'Edit Event' : 'Add New Event'}</h2>
+                            <div className={style.formGroup}>
+                                <label className={style.formLabel}>Title</label>
+                                <input
+                                    type="text"
+                                    className={style.formInput}
+                                    value={currentEvent.title}
+                                    onChange={(e) => setCurrentEvent({ ...currentEvent, title: e.target.value })}
+                                />
+                            </div>
+                            <div className={style.formGroup}>
+                                <label className={style.formLabel}>Description</label>
+                                <textarea
+                                    className={style.formTextarea}
+                                    value={currentEvent.description}
+                                    onChange={(e) => setCurrentEvent({ ...currentEvent, description: e.target.value })}
+                                />
+                            </div>
+                            <div className={style.formRow}>
+                                <div className={style.formGroup}>
+                                    <label className={style.formLabel}>Start</label>
+                                    <input
+                                        type="datetime-local"
+                                        className={style.formInput}
+                                        value={currentEvent.start}
+                                        onChange={(e) => setCurrentEvent({ ...currentEvent, start: e.target.value })}
+                                    />
+                                </div>
+                                <div className={style.formGroup}>
+                                    <label className={style.formLabel}>End</label>
+                                    <input
+                                        type="datetime-local"
+                                        className={style.formInput}
+                                        value={currentEvent.end}
+                                        onChange={(e) => setCurrentEvent({ ...currentEvent, end: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+                            <div className={style.formActions}>
+                                {currentEvent.id && (
+                                    <button
+                                        className={style.deleteButton}
+                                        onClick={handleEventDelete}
+                                    >
+                                        Delete
+                                    </button>
+                                )}
+                                <button
+                                    className={style.cancelButton}
+                                    onClick={() => setShowEventModal(false)}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    className={style.saveButton}
+                                    onClick={handleEventSubmit}
+                                >
+                                    Save
+                                </button>
+                            </div>
                         </div>
                     </Modal>
                 )}
-
-                {/* Task Form Modal */}
                 {showTaskModal && (
                     <TaskForm
-                        employees={[]} // Pass your employees list here
+                        employees={[]}
                         onSubmit={handleTaskSubmit}
-                        currentUserPriority={1} // Set appropriate priority
+                        currentUserPriority={1}
                         isOpen={showTaskModal}
                         onClose={() => setShowTaskModal(false)}
                     />
@@ -246,23 +293,16 @@ export default function Calendar() {
         </ProtectedRoute>
     );
 }
-
-// Custom event renderer to show titles clearly
 function renderEventContent(eventInfo: any) {
     return (
-        <div style={{
-            padding: '2px',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap'
-        }}>
-            <strong>{eventInfo.event.title}</strong>
+        <div className={style.eventContent}>
+            <div className={style.eventTitle}>{eventInfo.event.title}</div>
             {eventInfo.event.extendedProps.isTask && (
-                <div style={{
-                    fontSize: '0.8em',
-                    fontStyle: 'italic'
-                }}>
+                <div className={style.taskStatusBadge}>
                     {eventInfo.event.extendedProps.status}
+                    {eventInfo.event.extendedProps.assignedTo && (
+                        <span className={style.assignedTo}> • {eventInfo.event.extendedProps.assignedTo}</span>
+                    )}
                 </div>
             )}
         </div>

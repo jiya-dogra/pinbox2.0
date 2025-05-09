@@ -50,50 +50,45 @@ export default function ManageRooms() {
 
     return (
         <ProtectedRoute>
-            <div>
+            <div className={style.wrapper}>
                 <AdminHeader />
-                <div className={style.wrapper}>
-                    <div className={style.content}>
-                        <RoomList
-                            rooms={rooms}
-                            onAdd={handleAdd}
-                            onEdit={handleEdit}
-                            onDelete={handleDelete}
-                            error={error}
-                            isLoading={isLoading}
-                            onMembersClick={(room: Room) => { // Explicitly typed parameter
-                                setSelectedRoom(room);
-                                setIsMembersDialogOpen(true);
-                            }}
-                        />
-                    </div>
-                </div>
-
-                <RoomDialog
-                    isOpen={isDialogOpen}
-                    room={currentRoom}
-                    onSubmit={handleSubmit}
-                    onClose={closeDialog}
-                    isSubmitting={isSubmitting}
-                />
-
-                {selectedRoom && (
-                    <RoomMembersDialog
-                        isOpen={isMembersDialogOpen}
-                        employees={roomEmployees}
-                        onClose={(updatedEmployees) => {
-                            setIsMembersDialogOpen(false);
-                            if (updatedEmployees) {
-                                // Update the local state with new priorities
-                                setRoomEmployees(updatedEmployees);
-                                // If you need to update the global employees state:
-                                // You might want to add a function in useEmployees to handle priority updates
-                            }
+                <div className={style.content}>
+                    <RoomList
+                        rooms={rooms}
+                        onAdd={handleAdd}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                        error={error}
+                        isLoading={isLoading}
+                        onMembersClick={(room: Room) => { // Explicitly typed parameter
+                            setSelectedRoom(room);
+                            setIsMembersDialogOpen(true);
                         }}
-                        onPriorityChange={handlePriorityChange}
                     />
-                )}
+                </div>
             </div>
+
+            <RoomDialog
+                isOpen={isDialogOpen}
+                room={currentRoom}
+                onSubmit={handleSubmit}
+                onClose={closeDialog}
+                isSubmitting={isSubmitting}
+            />
+
+            {selectedRoom && (
+                <RoomMembersDialog
+                    isOpen={isMembersDialogOpen}
+                    employees={roomEmployees}
+                    onClose={(updatedEmployees) => {
+                        setIsMembersDialogOpen(false);
+                        if (updatedEmployees) {
+                            setRoomEmployees(updatedEmployees);
+                        }
+                    }}
+                    onPriorityChange={handlePriorityChange}
+                />
+            )}
         </ProtectedRoute>
     );
 }

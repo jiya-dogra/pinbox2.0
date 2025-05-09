@@ -8,7 +8,7 @@ export default function AdminHeader() {
 
     return (
         <div className='nav-wrapper'>
-            <p className='logo'>PINBOX</p>
+            <p className='logo' onClick={() => router.push('/admin-panel')}>PINBOX</p>
             <nav className='nav'>
                 <ul>
                     <li onClick={() => router.push('/admin-panel')}>Dashboard</li>

@@ -2,44 +2,36 @@
 
 import MainHeader from '@/src/components/mainheader';
 import { useRouter } from 'next/navigation';
-import style from '@/src/styles/landingpage.module.css';
+import style from '@/src/styles/main.module.css';
 
 export default function LandingPage() {
 
     const router = useRouter();
 
     return (
-        <div>
+        <div className='wrapper'>
             <MainHeader />
-            <div className={style.wrapper}>
-                <div className={style.content}>
-                    <div className={style.hero}>
-                        <h1>Streamline Your Team's Productivity with Pinbox</h1>
-                        <p className={style.tagline}>The all-in-one collaboration platform designed for modern workplaces</p>
-                        <button
-                            className={style.ctaButton}
-                            onClick={() => router.push('/register')}
-                        >Get Started - It's Free</button>
-                    </div>
-                    <div className={style.features}>
+            <div className='content'>
+                <div className={style.hero}>
+                    <h1>Welcome to<br />Pinbox - Teamwork Simplified</h1>
+                    <p>Streamline Your Team's Productivity with Pinbox.<br />The all-in-one collaboration platform designed for modern workplaces</p>
+                    <button onClick={() => router.push('/register')}>Get Started</button>
+                </div>
+                <div className={style.features}>
+                    <h1>Features So Simple Yet Effective</h1>
+                    <div className={style.featuresdisplay}>
                         <div className={style.featureCard}>
-                            <h3>Task Management</h3>
+                            <h2>Task Management</h2>
                             <p>Assign, track, and prioritize tasks with ease across your entire team.</p>
                         </div>
                         <div className={style.featureCard}>
-                            <h3>Smart Scheduling</h3>
+                            <h2>Smart Scheduling</h2>
                             <p>Integrated calendar views help everyone stay on the same page.</p>
                         </div>
                         <div className={style.featureCard}>
-                            <h3>Role-Based Access</h3>
+                            <h2>Role-Based Access</h2>
                             <p>Admin and employee dashboards tailored to different needs.</p>
                         </div>
-                    </div>
-                    <div className={style.testimonial}>
-                        <blockquote>
-                            "Pinbox transformed how our team collaborates. We've seen a 40% increase in productivity since switching."
-                        </blockquote>
-                        <p>- Sarah K., Marketing Team Lead</p>
                     </div>
                 </div>
             </div>

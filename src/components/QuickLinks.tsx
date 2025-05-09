@@ -4,12 +4,16 @@ import style from '@/src/styles/admin.module.css';
 export default function QuickLinks() {
     return (
         <div className={style.quickLinks}>
-            <a href="/admin-panel/manage-rooms" className={style.Card}>
-                Manage Rooms <FiArrowRight />
-            </a>
-            <a href="/admin-panel/manage-employees" className={style.Card}>
-                Manage Employees <FiArrowRight />
-            </a>
+            <div className={style.linkCard}>
+                <a href="/admin-panel/manage-rooms" className={style.Card}>
+                    Go To Rooms
+                </a>
+            </div>
+            <div className={style.linkCard}>
+                <a href="/admin-panel/manage-employees" className={style.Card}>
+                    Go To Employees
+                </a>
+            </div>
         </div>
     );
 }

@@ -6,8 +6,8 @@ import { Room } from '@/src/types/types';
 interface RoomListProps {
     rooms: Room[];
     onAdd: () => void;
-    onEdit: (room: Room, index: number) => void;  // Added index parameter
-    onDelete: (id: string) => void;  // Removed Promise return
+    onEdit: (room: Room, index: number) => void;
+    onDelete: (id: string) => void;
     error: string;
     isLoading: boolean;
     onMembersClick: (room: Room) => void;
@@ -24,7 +24,7 @@ export default function RoomList({
 }: RoomListProps) {
     return (
         <ul className={style.roomlist}>
-            <li style={{ color: '#656565' }}>
+            <li>
                 <span style={{ justifySelf: 'center' }}>S.No.</span>
                 <span>Room Name</span>
                 <span>Members</span>
@@ -67,7 +67,7 @@ export default function RoomList({
                         }}>
                             <BiSolidEdit
                                 onClick={() => onEdit(room, index)}
-                                style={{ cursor: 'pointer', color: 'black' }}
+                                style={{ cursor: 'pointer' }}
                                 title="Edit"
                             />
                             <AiOutlineDelete

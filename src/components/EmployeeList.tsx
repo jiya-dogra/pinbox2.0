@@ -20,28 +20,30 @@ export default function EmployeeList({
 }: EmployeeListProps) {
     return (
         <ul className={style.emplist}>
-            <li style={{ color: '#656565' }}>
-                <span>S.No.</span>
+            <li>
+                <span style={{ textAlign: 'center' }}>S.No.</span>
                 <span>Name</span>
                 <span>Email</span>
                 <span>Room</span>
                 <span onClick={onAdd}>Add...</span>
             </li>
 
-            {error && <li className={style.errorRow}>{error}</li>}
-            {isLoading && <li className={style.loadingRow}>Loading...</li>}
+            {error && <li>{error}</li>}
+            {isLoading && <li>Loading...</li>}
 
-            {employees.map((employee, index) => (
-                <li key={employee.id}>
-                    <span>{index + 1}</span>
-                    <span>{employee.fullName}</span>
-                    <span>{employee.email}</span>
-                    <span onClick={() => onAssignRoom(employee.id)}>
-                        {employee.room?.name || 'N/A'}
-                    </span>
-                    <span onClick={() => onEdit(employee)}>Edit</span>
-                </li>
-            ))}
+            {employees
+                .sort((a, b) => a.fullName.localeCompare(b.fullName))
+                .map((employee, index) => (
+                    <li key={employee.id}>
+                        <span style={{ textAlign: 'center' }}>{index + 1}</span>
+                        <span>{employee.fullName}</span>
+                        <span>{employee.email}</span>
+                        <span onClick={() => onAssignRoom(employee.id)}>
+                            {employee.room?.name || 'N/A'}
+                        </span>
+                        <span onClick={() => onEdit(employee)}>Edit</span>
+                    </li>
+                ))}
         </ul>
     );
 }

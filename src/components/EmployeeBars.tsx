@@ -8,7 +8,7 @@ export default function EmployeeBars({
     const maxCount = Math.max(...data.map(r => r.count), 1);
 
     return (
-        <div className={style.Card}>
+        <div className={style.chartCard}>
             <h3>Employees Per Room</h3>
             <div className={style.horizontalBars}>
                 {data

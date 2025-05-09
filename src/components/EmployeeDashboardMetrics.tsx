@@ -1,5 +1,8 @@
 import React from 'react';
 import style from '@/src/styles/employee.module.css';
+import { MdOutlineTaskAlt, MdOutlinePendingActions } from "react-icons/md";
+import { FaTasks } from "react-icons/fa";
+import { RiAlertLine } from "react-icons/ri";
 
 interface DashboardMetricsProps {
     totalTasks?: number;
@@ -23,20 +26,24 @@ export const DashboardMetrics: React.FC<DashboardMetricsProps> = ({
     return (
         <div className={style.metricsContainer}>
             <div className={style.metricCard}>
+                <FaTasks className={style.metricIcon} />
                 <h3>Total Tasks</h3>
-                <p>{totalTasks || 0}</p>
+                <h3>{totalTasks || 0}</h3>
             </div>
             <div className={style.metricCard}>
+                <MdOutlineTaskAlt className={style.metricIcon} />
                 <h3>Completed</h3>
-                <p>{completedTasks || 0}</p>
+                <h3>{completedTasks || 0}</h3>
             </div>
             <div className={style.metricCard}>
+                <MdOutlinePendingActions className={style.metricIcon} />
                 <h3>Pending</h3>
-                <p>{pendingTasks || 0}</p>
+                <h3>{pendingTasks || 0}</h3>
             </div>
             <div className={style.metricCard}>
+                <RiAlertLine className={style.metricIcon} />
                 <h3>Overdue</h3>
-                <p>{overdueTasks || 0}</p>
+                <h3>{overdueTasks || 0}</h3>
             </div>
         </div>
     );

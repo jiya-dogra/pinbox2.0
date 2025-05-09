@@ -174,59 +174,61 @@ export default function Tasks() {
 
     return (
         <ProtectedRoute>
-            <div>
+            <div className={style.wrapper}>
                 <EmployeeHeader />
-                <div className={style.wrapper}>
-                    <div className={style.content}>
-                        <div className={style.listwrapper}>
-                            <div className={style.listcontent}>
-                                <h2>Tasks Assigned To Me</h2>
-                                <TaskList
-                                    tasks={assignedToMe}
-                                    onTaskClick={(task) => console.log('Task clicked:', task)}
-                                    onStatusChange={handleStatusChange}
-                                    onDeleteTask={handleDeleteTask}
-                                    onEditTask={(task) => {
-                                        setEditingTask(task);
-                                        setIsDialogOpen(true);
-                                    }}
-                                />
-                            </div>
-                            <div className={style.listcontent}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <h2>Tasks Assigned By Me</h2>
-                                    <button
-                                        onClick={() => setIsDialogOpen(true)}
-                                        className={style.addButton}
-                                    >
-                                        Add Task...
-                                    </button>
-                                </div>
-                                <TaskList
-                                    tasks={assignedByMe}
-                                    onTaskClick={(task) => console.log('Task clicked:', task)}
-                                    onStatusChange={handleStatusChange}
-                                    onDeleteTask={handleDeleteTask}
-                                    onEditTask={(task) => {
-                                        setEditingTask(task);
-                                        setIsDialogOpen(true);
-                                    }}
-                                />
-                            </div>
-
-                            <TaskForm
-                                employees={employees}
-                                onSubmit={editingTask ? handleUpdateTask : handleCreateTask}
-                                currentUserPriority={currentUser.priority || 1}
-                                isOpen={isDialogOpen}
-                                onClose={() => {
-                                    setIsDialogOpen(false);
-                                    setEditingTask(null);
+                <div className={style.content}>
+                    <div className={style.listwrapper}>
+                        <div className={style.listcontent}>
+                            <h2>Tasks Assigned To Me</h2>
+                            <TaskList
+                                tasks={assignedToMe}
+                                onTaskClick={(task) => console.log('Task clicked:', task)}
+                                onStatusChange={handleStatusChange}
+                                onDeleteTask={handleDeleteTask}
+                                onEditTask={(task) => {
+                                    setEditingTask(task);
+                                    setIsDialogOpen(true);
                                 }}
-                                initialData={editingTask || undefined}
-                                isEditing={!!editingTask}
+                                showAssignedBy={true}
+                                allowEditDelete={false}
                             />
                         </div>
+                        <div className={style.listcontent}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <h2>Tasks Assigned By Me</h2>
+                                <button
+                                    onClick={() => setIsDialogOpen(true)}
+                                    style={{ fontSize: '1.2em' }}
+                                >
+                                    Add Task...
+                                </button>
+                            </div>
+                            <TaskList
+                                tasks={assignedByMe}
+                                onTaskClick={(task) => console.log('Task clicked:', task)}
+                                onStatusChange={handleStatusChange}
+                                onDeleteTask={handleDeleteTask}
+                                onEditTask={(task) => {
+                                    setEditingTask(task);
+                                    setIsDialogOpen(true);
+                                }}
+                                showAssignedTo={true}
+                                allowEditDelete={true}
+                            />
+                        </div>
+
+                        <TaskForm
+                            employees={employees}
+                            onSubmit={editingTask ? handleUpdateTask : handleCreateTask}
+                            currentUserPriority={currentUser.priority || 1}
+                            isOpen={isDialogOpen}
+                            onClose={() => {
+                                setIsDialogOpen(false);
+                                setEditingTask(null);
+                            }}
+                            initialData={editingTask || undefined}
+                            isEditing={!!editingTask}
+                        />
                     </div>
                 </div>
             </div>

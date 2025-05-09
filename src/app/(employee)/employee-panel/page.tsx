@@ -15,28 +15,26 @@ export default function EmployeePanel() {
 
     return (
         <ProtectedRoute>
-            <div>
+            <div className={style.wrapper}>
                 <EmployeeHeader />
-                <div className={style.wrapper}>
-                    <div className={style.content}>
-                        <DashboardMetrics
-                            totalTasks={data?.totalTasks}
-                            completedTasks={data?.completedTasks}
-                            pendingTasks={data?.pendingTasks}
-                            overdueTasks={data?.overdueTasks}
+                <div className={style.content}>
+                    <DashboardMetrics
+                        totalTasks={data?.totalTasks}
+                        completedTasks={data?.completedTasks}
+                        pendingTasks={data?.pendingTasks}
+                        overdueTasks={data?.overdueTasks}
+                        isLoading={isLoading}
+                    />
+
+                    <div className={style.dashboardCharts}>
+                        <TaskStatusChart
+                            data={data?.taskStatusDistribution}
                             isLoading={isLoading}
                         />
-
-                        <div className={style.dashboardCharts}>
-                            <TaskStatusChart
-                                data={data?.taskStatusDistribution}
-                                isLoading={isLoading}
-                            />
-                            <TaskDueDateChart
-                                data={data?.tasksByDueDate}
-                                isLoading={isLoading}
-                            />
-                        </div>
+                        <TaskDueDateChart
+                            data={data?.tasksByDueDate}
+                            isLoading={isLoading}
+                        />
                     </div>
                 </div>
             </div>

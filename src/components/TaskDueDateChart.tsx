@@ -18,19 +18,27 @@ export const TaskDueDateChart: React.FC<TaskDueDateChartProps> = ({ data, isLoad
             <ResponsiveContainer width="100%" height={300}>
                 <BarChart
                     data={data}
-                    margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                    }}
+                    // Disable hover interactions at chart level
+                    onMouseEnter={() => { }}
+                    onMouseLeave={() => { }}
+                    onMouseMove={() => { }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="week" />
                     <YAxis />
-                    <Tooltip />
+                    <Tooltip
+                        isAnimationActive={false}
+                        cursor={false} // Disable hover background
+                    />
                     <Legend />
-                    <Bar dataKey="count" fill="#8884d8" name="Tasks" />
+                    <Bar
+                        dataKey="count"
+                        fill="#9dceed"
+                        name="Tasks"
+                        isAnimationActive={false}
+                        // Set activeBar to match normal appearance
+                        activeBar={{ fill: "#9dceed" }}
+                    />
                 </BarChart>
             </ResponsiveContainer>
         </div>

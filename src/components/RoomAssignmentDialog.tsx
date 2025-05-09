@@ -32,7 +32,7 @@ export default function RoomAssignmentDialog({
                     ))}
                 </div>
                 <div className={style.buttonGroup}>
-                    <button type="button" onClick={onClose}>Cancel</button>
+                    <button style={{ fontSize: '1.2em' }} type="button" onClick={onClose}>Cancel</button>
                 </div>
             </div>
         </div>

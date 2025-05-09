@@ -2,7 +2,7 @@
 
 import MainHeader from '@/src/components/mainheader';
 import { useState, useEffect } from 'react';
-import style from '@/src/styles/register.module.css';
+import style from '@/src/styles/main.module.css';
 import { useRouter } from 'next/navigation';
 
 export default function Register() {
@@ -65,43 +65,36 @@ export default function Register() {
     }, [successMessage]);
 
     return (
-        <div>
+        <div className='wrapper'>
             <MainHeader />
-            <div className={style.wrapper}>
-                <div className={style.content}>
-                    <p style={{ fontSize: '2.5em', marginTop: '1em' }}>Register Your Company</p>
-                    <p style={{ fontSize: '1.2em', marginBlock: '3em' }}>Fill the details of your company</p>
+            <div className='content'>
+                <form className={style.form} onSubmit={handleSubmit} autoComplete="off">
+                    <h2 style={{ gridColumn: '1 / -1', textAlign: 'center' }}>Register Your Company</h2>
 
-                    <form className={style.form} onSubmit={handleSubmit} autoComplete="off">
-                        <label>Company Name:</label>
-                        <input name="companyName" type="text" placeholder="e.g. Pinbox Pvt Ltd" />
+                    <label>Company Name:</label>
+                    <input name="companyName" type="text" placeholder="e.g. Pinbox Pvt Ltd" />
 
-                        <label>Company Email:</label>
-                        <input name="companyEmail" type="email" placeholder="e.g. info@pinbox.com" />
+                    <label>Company Email:</label>
+                    <input name="companyEmail" type="email" placeholder="e.g. info@pinbox.com" />
 
-                        <label>Company Phone:</label>
-                        <input name="companyPhone" type="tel" placeholder="e.g. +91 9876543210" />
+                    <label>Company Phone:</label>
+                    <input name="companyPhone" type="tel" placeholder="e.g. +91 9876543210" />
 
-                        <label>Industry Type:</label>
-                        <input name="industryType" type="text" placeholder="e.g. SaaS, E-commerce, Healthcare..." />
+                    <label>Industry Type:</label>
+                    <input name="industryType" type="text" placeholder="e.g. SaaS, E-commerce, Healthcare..." />
 
-                        <label>Company Address:</label>
-                        <input name="companyAddress" type="text" placeholder="City, State only" />
+                    <label>Company Address:</label>
+                    <input name="companyAddress" type="text" placeholder="City, State only" />
 
-                        <label>Company Website:</label>
-                        <input name="companyWebsite" type="url" placeholder="e.g. https://pinbox.com" />
+                    <label>Company Website (Optional):</label>
+                    <input name="companyWebsite" type="url" placeholder="e.g. https://pinbox.com" />
 
-                        <br />
-                        <button type="reset" className={style.button}>Reset Form</button>
-                        <button type="submit" className={style.button}>Register Company</button>
-                    </form>
+                    <span /><span />
+                    <button type="reset" style={{ fontSize: '1.2em', justifySelf: 'left' }}>Reset Form</button>
+                    <button type="submit" style={{ fontSize: '1.2em', justifySelf: 'right' }}>Register Company</button>
+                </form>
 
-                    {successMessage && (
-                        <p className={style.toast}>
-                            {successMessage}
-                        </p>
-                    )}
-                </div>
+                {successMessage && (<h3>{successMessage}</h3>)}
             </div>
         </div>
     );

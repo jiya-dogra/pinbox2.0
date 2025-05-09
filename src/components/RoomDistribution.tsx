@@ -6,7 +6,7 @@ export default function RoomDistribution({
     data: Array<{ name: string; count: number }>;
 }) {
     return (
-        <div className={style.Card}>
+        <div className={style.chartCard}>
             <h3>Employees Distribution</h3>
             <div className={style.distributionGrid}>
                 {data
@@ -14,7 +14,7 @@ export default function RoomDistribution({
                     .slice(0, 8)
                     .map((room) => (
                         <div key={room.name} className={style.gridItem}>
-                            <div className={style.roomName}>{room.name}</div>
+                            <div>{room.name}</div>
                             <div className={style.employeeDots}>
                                 {Array.from({ length: Math.min(room.count, 10) }).map((_, i) => (
                                     <div key={i} className={style.dot} />

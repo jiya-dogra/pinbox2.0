@@ -8,7 +8,7 @@ export default function EmployeeHeader() {
 
     return (
         <div className='nav-wrapper'>
-            <p className='logo'>PINBOX</p>
+            <p className='logo' onClick={() => router.push('/employee-panel')}>PINBOX</p>
             <nav className='nav'>
                 <ul>
                     <li onClick={() => router.push('/employee-panel')}>Dashboard</li>

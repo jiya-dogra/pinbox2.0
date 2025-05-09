@@ -7,10 +7,10 @@ export default function MainHeader() {
 
     return (
         <div className='nav-wrapper'>
-            <p className='logo'>PINBOX</p>
+            <p className='logo' onClick={() => router.push('/home')}>PINBOX</p>
             <nav className='nav'>
                 <ul>
-                    <li onClick={() => router.push('/')}>Home</li>
+                    <li onClick={() => router.push('/home')}>Home</li>
                     <li onClick={() => router.push('/about')}>About</li>
                     <li onClick={() => router.push('/developers')}>Developers</li>
                     <li onClick={() => router.push('/contact')}>Contact</li>

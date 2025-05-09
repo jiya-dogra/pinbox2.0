@@ -6,7 +6,7 @@ import { Employee } from '@/src/types/types';
 interface RoomMembersDialogProps {
     isOpen: boolean;
     employees: Employee[];
-    onClose: (updatedEmployees?: Employee[]) => void; // Modified to return updates
+    onClose: (updatedEmployees?: Employee[]) => void;
     onPriorityChange: (employeeId: string, priority: number) => Promise<void>;
 }
 
@@ -19,7 +19,6 @@ export default function RoomMembersDialog({
     const [localEmployees, setLocalEmployees] = useState<Employee[]>([]);
     const [isSaving, setIsSaving] = useState(false);
 
-    // Initialize employees when dialog opens
     useEffect(() => {
         if (isOpen) {
             setLocalEmployees([...employees].sort((a, b) => (a.priority || 0) - (b.priority || 0)));
@@ -29,7 +28,6 @@ export default function RoomMembersDialog({
     const handlePriorityChange = async (employeeId: string, newPriority: number) => {
         if (newPriority < 1) return;
 
-        // Optimistic UI update
         const updatedEmployees = localEmployees.map(e =>
             e.id === employeeId ? { ...e, priority: newPriority } : e
         ).sort((a, b) => (a.priority || 0) - (b.priority || 0));
@@ -41,7 +39,6 @@ export default function RoomMembersDialog({
             await onPriorityChange(employeeId, newPriority);
         } catch (error) {
             console.error('Failed to update priority:', error);
-            // Revert on error
             setLocalEmployees([...employees].sort((a, b) => (a.priority || 0) - (b.priority || 0)));
             throw error;
         } finally {
@@ -50,11 +47,11 @@ export default function RoomMembersDialog({
     };
 
     const handleDone = () => {
-        onClose(localEmployees); // Pass back the updated employees
+        onClose(localEmployees);
     };
 
     const handleCancel = () => {
-        onClose(); // Close without changes
+        onClose();
     };
 
     if (!isOpen) return null;
@@ -86,17 +83,17 @@ export default function RoomMembersDialog({
                     ))}
                 </div>
 
-                <div className={style.dialogButtons}>
+                <div className={style.btngrp}>
                     <button
                         onClick={handleCancel}
-                        className={`${style.button} ${style.cancelButton}`}
+                        style={{ fontSize: '1.2em' }}
                         disabled={isSaving}
                     >
                         Cancel
                     </button>
                     <button
                         onClick={handleDone}
-                        className={style.button}
+                        style={{ fontSize: '1.2em' }}
                         disabled={isSaving}
                     >
                         Done

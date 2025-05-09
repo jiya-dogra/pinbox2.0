@@ -13,23 +13,21 @@ export default function AdminPanel() {
 
     return (
         <ProtectedRoute>
-            <div>
+            <div className={style.wrapper}>
                 <AdminHeader />
-                <div className={style.wrapper}>
-                    <div className={style.admincontent}>
-                        <DashboardMetrics
-                            totalEmployees={data?.totalEmployees}
-                            totalRooms={data?.totalRooms}
-                            isLoading={isLoading}
-                        />
+                <div className={style.content}>
+                    <DashboardMetrics
+                        totalEmployees={data?.totalEmployees}
+                        totalRooms={data?.totalRooms}
+                        isLoading={isLoading}
+                    />
 
-                        <div className={style.dashboardCharts}>
-                            <RoomDistribution data={data?.employeesPerRoom} />
-                            <EmployeeBars data={data?.roomOccupancy} />
-                        </div>
-
-                        <QuickLinks />
+                    <div className={style.dashboardCharts}>
+                        <RoomDistribution data={data?.employeesPerRoom} />
+                        <EmployeeBars data={data?.roomOccupancy} />
                     </div>
+
+                    <QuickLinks />
                 </div>
             </div>
         </ProtectedRoute>

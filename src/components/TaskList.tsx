@@ -11,6 +11,9 @@ interface TaskListProps {
     onStatusChange: (taskId: string, newStatus: TaskStatus) => void;
     onDeleteTask: (taskId: string) => void;
     onEditTask: (task: Task) => void;
+    showAssignedBy?: boolean;
+    showAssignedTo?: boolean;
+    allowEditDelete?: boolean;
 }
 
 export default function TaskList({
@@ -18,7 +21,10 @@ export default function TaskList({
     onTaskClick,
     onStatusChange,
     onDeleteTask,
-    onEditTask
+    onEditTask,
+    showAssignedBy = false,
+    showAssignedTo = false,
+    allowEditDelete = true,
 }: TaskListProps) {
     const safeTasks = Array.isArray(tasks) ? tasks : [];
     const [showConfirm, setShowConfirm] = useState(false);
@@ -27,6 +33,7 @@ export default function TaskList({
     const [newStatus, setNewStatus] = useState<TaskStatus | null>(null);
 
     const handleStatusClick = (task: Task, e: React.MouseEvent) => {
+        if (!allowEditDelete) return;
         e.stopPropagation();
         const nextStatus: TaskStatus = task.status === 'pending' ? 'completed' : 'pending';
         setSelectedTask(task);
@@ -74,31 +81,40 @@ export default function TaskList({
                         <div>
                             <h3>{task.title}</h3>
                             <p>{task.description}</p>
-                            {task.assignedBy && <p>Assigned By: {task.assignedBy.fullName}</p>}
-                            {task.assignedTo && <p>Assigned To: {task.assignedTo.fullName}</p>}
+                            {showAssignedBy && task.assignedBy && (
+                                <p>Assigned By: {task.assignedBy.fullName}</p>
+                            )}
+                            {showAssignedTo && task.assignedTo && (
+                                <p>Assigned To: {task.assignedTo.fullName}</p>
+                            )}
                             <p>Due: {new Date(task.dueDate).toLocaleDateString()}</p>
                         </div>
-                        <div style={{ display: 'grid', gridTemplateRows: '1fr 1fr', justifyItems: 'end' }}>
-                            <FaEdit
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    onEditTask(task);
-                                }}
-                                style={{ cursor: 'pointer' }}
-                                title="Edit Task"
-                            />
-                            <FaTrash
-                                onClick={(e) => handleDeleteClick(task, e)}
-                                style={{ cursor: 'pointer' }}
-                                title="Delete Task"
-                            />
+                        <div style={{ display: 'flex', flexDirection: 'column', justifyItems: 'end', alignItems: 'end', justifyContent: 'space-between' }}>
                             <p
                                 title='Change Status'
-                                className={`${style.taskStatus} ${style[task.status]}`}
+                                className={`${style.taskStatus} ${style[task.status]} ${!allowEditDelete ? style.disabledStatus : ''
+                                    }`}
                                 onClick={(e) => handleStatusClick(task, e)}
                             >
                                 {task.status}
                             </p>
+                            {allowEditDelete && (
+                                <>
+                                    <FaEdit
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            onEditTask?.(task);
+                                        }}
+                                        style={{ cursor: 'pointer' }}
+                                        title="Edit Task"
+                                    />
+                                    <FaTrash
+                                        onClick={(e) => handleDeleteClick(task, e)}
+                                        style={{ cursor: 'pointer' }}
+                                        title="Delete Task"
+                                    />
+                                </>
+                            )}
                         </div>
                     </div>
                 ))

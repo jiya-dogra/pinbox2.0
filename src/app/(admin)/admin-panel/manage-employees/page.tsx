@@ -28,37 +28,35 @@ export default function ManageEmployees() {
 
     return (
         <ProtectedRoute>
-            <div>
+            <div className={style.wrapper}>
                 <AdminHeader />
-                <div className={style.wrapper}>
-                    <div className={style.content}>
-                        <EmployeeList
-                            employees={employees}
-                            onAdd={handleAdd}
-                            onEdit={handleEdit}
-                            onAssignRoom={handleAssignRoom}
-                            error={error}
-                            isLoading={isLoading}
-                        />
-                    </div>
+                <div className={style.content}>
+                    <EmployeeList
+                        employees={employees}
+                        onAdd={handleAdd}
+                        onEdit={handleEdit}
+                        onAssignRoom={handleAssignRoom}
+                        error={error}
+                        isLoading={isLoading}
+                    />
                 </div>
-
-                <EmployeeDialog
-                    isOpen={isDialogOpen}
-                    employee={currentEmployee}
-                    onSubmit={handleSubmit}
-                    onDelete={handleDelete}
-                    onClose={closeDialogs}
-                    isSubmitting={isSubmitting}
-                />
-
-                <RoomAssignmentDialog
-                    isOpen={isRoomDialogOpen}
-                    rooms={rooms}
-                    onAssign={assignRoom}
-                    onClose={closeDialogs}
-                />
             </div>
+
+            <EmployeeDialog
+                isOpen={isDialogOpen}
+                employee={currentEmployee}
+                onSubmit={handleSubmit}
+                onDelete={handleDelete}
+                onClose={closeDialogs}
+                isSubmitting={isSubmitting}
+            />
+
+            <RoomAssignmentDialog
+                isOpen={isRoomDialogOpen}
+                rooms={rooms}
+                onAssign={assignRoom}
+                onClose={closeDialogs}
+            />
         </ProtectedRoute>
     );
 }

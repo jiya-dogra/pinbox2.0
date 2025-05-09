@@ -27,16 +27,18 @@ export default function EmployeeDialog({
     });
 
     useEffect(() => {
-        if (employee) {
-            setFormData({
-                fullName: employee.fullName,
-                email: employee.email,
-                password: employee.password
-            });
-        } else {
-            setFormData({ fullName: '', email: '', password: '' });
+        setFormData({
+            fullName: employee?.fullName || '',
+            email: employee?.email || '',
+            password: employee?.password || ''
+        });
+    }, [isOpen, employee]);
+
+    const handleDeleteWithConfirm = () => {
+        if (window.confirm('Are you sure you want to delete this employee?')) {
+            onDelete();
         }
-    }, [employee]);
+    };
 
     if (!isOpen) return null;
 
@@ -44,45 +46,45 @@ export default function EmployeeDialog({
         <div className={style.dialogOverlay}>
             <div className={style.dialog}>
                 <h2>{employee ? 'Edit Employee' : 'Add Employee'}</h2>
-                <form onSubmit={(e) => {
-                    e.preventDefault();
-                    onSubmit(formData);
-                }}>
-                    <div className={style.formGroup}>
-                        <label>Full Name</label>
-                        <input
-                            value={formData.fullName}
-                            onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                            required
-                        />
-                    </div>
-                    <div className={style.formGroup}>
-                        <label>Email</label>
-                        <input
-                            type="email"
-                            value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            required
-                            disabled={!!employee}
-                        />
-                    </div>
-                    <div className={style.formGroup}>
-                        <label>Password</label>
-                        <input
-                            type="password"
-                            value={formData.password}
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                            required
-                        />
-                    </div>
-                    <div className={style.buttonGroup}>
+                <form
+                    className={style.form}
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        onSubmit(formData);
+                    }}>
+                    <input
+                        value={formData.fullName}
+                        onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                        required
+                        placeholder='Full Name'
+                    />
+                    <input
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        required
+                        disabled={!!employee}
+                        placeholder='Email'
+                    />
+                    <input
+                        type="password"
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        required
+                        placeholder='Password'
+                    />
+                    <div className={style.btngrp}>
                         {employee && (
-                            <button type="button" onClick={onDelete} disabled={isSubmitting}>
+                            <button
+                                style={{ fontSize: '1.2em' }}
+                                type="button"
+                                onClick={handleDeleteWithConfirm}
+                                disabled={isSubmitting}>
                                 Delete
                             </button>
                         )}
-                        <button type="button" onClick={onClose}>Cancel</button>
-                        <button type="submit" disabled={isSubmitting}>
+                        <button style={{ fontSize: '1.2em' }} type="button" onClick={onClose}>Cancel</button>
+                        <button style={{ fontSize: '1.2em' }} type="submit" disabled={isSubmitting}>
                             {employee ? 'Update' : 'Create'}
                         </button>
                     </div>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import style from '@/src/styles/register.module.css';
+import style from '@/src/styles/main.module.css';
 import MainHeader from '@/src/components/mainheader';
 import { login, isAuthenticated } from '@/src/utils/auth';
 
@@ -47,53 +47,51 @@ export default function Login() {
     };
 
     return (
-        <div>
+        <div className='wrapper'>
             <MainHeader />
-            <div className={style.wrapper}>
-                <div className={style.content}>
-                    <h1>Login</h1>
-                    <form onSubmit={handleSubmit} className={style.formtwo}>
-                        <div className={style.optionwrapper}>
-                            <div className={style.option}>
-                                <label>Employee</label>
-                                <input
-                                    type="radio"
-                                    name="userType"
-                                    value="employee"
-                                    checked={formData.userType === 'employee'}
-                                    onChange={() => setFormData(p => ({ ...p, userType: 'employee' }))}
-                                />
-                            </div>
-                            <div className={style.option}>
-                                <label>Admin</label>
-                                <input
-                                    type="radio"
-                                    name="userType"
-                                    value="admin"
-                                    checked={formData.userType === 'admin'}
-                                    onChange={() => setFormData(p => ({ ...p, userType: 'admin' }))}
-                                />
-                            </div>
+            <div className='content'>
+                <form onSubmit={handleSubmit} className={style.formtwo}>
+                    <h2>Login</h2>
+                    <div className={style.optionwrapper}>
+                        <div className={style.option}>
+                            <label>Employee</label>
+                            <input
+                                type="radio"
+                                name="userType"
+                                value="employee"
+                                checked={formData.userType === 'employee'}
+                                onChange={() => setFormData(p => ({ ...p, userType: 'employee' }))}
+                            />
                         </div>
+                        <div className={style.option}>
+                            <label>Admin</label>
+                            <input
+                                type="radio"
+                                name="userType"
+                                value="admin"
+                                checked={formData.userType === 'admin'}
+                                onChange={() => setFormData(p => ({ ...p, userType: 'admin' }))}
+                            />
+                        </div>
+                    </div>
 
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            required
-                        />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            value={formData.password}
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                            required
-                        />
-                        <button type="submit" className={style.button}>Login</button>
-                    </form>
-                    {error && <p className={style.error}>{error}</p>}
-                </div>
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        required
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        required
+                    />
+                    <button type="submit" style={{ fontSize: '1.2em' }}>Login</button>
+                </form>
+                {error && <p className={style.error}>{error}</p>}
             </div>
         </div>
     );

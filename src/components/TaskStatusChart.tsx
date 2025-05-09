@@ -2,7 +2,7 @@ import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import style from '@/src/styles/employee.module.css';
 
-const COLORS = ['#0088FE', '#FFBB28', '#FF8042'];
+const COLORS = ['#ffffff', '#9dceed', '#556169'];
 
 interface TaskStatusChartProps {
     data?: Array<{ name: string; value: number }>;
@@ -27,6 +27,7 @@ export const TaskStatusChart: React.FC<TaskStatusChartProps> = ({ data, isLoadin
                         outerRadius={80}
                         fill="#8884d8"
                         dataKey="value"
+                        isAnimationActive={false}
                         label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                     >
                         {data?.map((entry, index) => (

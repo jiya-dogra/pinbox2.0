@@ -36,28 +36,28 @@ export default function RoomDialog({
         <div className={style.dialogOverlay}>
             <div className={style.dialog}>
                 <h2>{room ? 'Edit Room' : 'Add New Room'}</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className={style.formGroup}>
-                        <label>Room Name:</label>
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                            disabled={isSubmitting}
-                        />
-                    </div>
-                    <div className={style.buttonGroup}>
+                <form onSubmit={handleSubmit} className={style.form}>
+                    <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                        disabled={isSubmitting}
+                        placeholder='Room Name'
+                    />
+                    <div className={style.btngrp}>
                         <button
                             type="button"
                             onClick={onClose}
                             disabled={isSubmitting}
+                            style={{ fontSize: '1.2em' }}
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
                             disabled={isSubmitting || !name.trim()}
+                            style={{ fontSize: '1.2em' }}
                         >
                             {isSubmitting ? 'Processing...' : room ? 'Update' : 'Create'}
                         </button>
